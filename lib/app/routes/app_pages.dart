@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/auth/auth_binding.dart';
 import 'package:split_money/app/modules/auth/auth_view.dart';
+import 'package:split_money/app/modules/home/home_binding.dart';
 import 'package:split_money/app/modules/home/home_view.dart';
+import 'package:split_money/app/modules/navigation/bindings/bottom_nav_binding.dart';
+import 'package:split_money/app/modules/navigation/views/main_screen.dart';
 import 'package:split_money/main.dart';
 
 import 'app_routes.dart';
@@ -44,16 +47,16 @@ class AppPages {
     //   page: () => const LocationView(),
     //   binding: LocationBinding(),
     // ),
-    // GetPage(
-    //   name: AppRoutes.main,
-    //   page: () => const MainScreen(),
-    //   binding: BottomNavBinding(),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.home,
-    //   page: () => const HomeView(),
-    //   binding: HomeBinding(),
-    // ),
+    GetPage(
+      name: AppRoutes.main,
+      page: () => const MainScreen(),
+      binding: BottomNavBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.home,
+      page: () => const HomeScreen(),
+      binding: HomeBinding(),
+    ),
     // GetPage(
     //   name: AppRoutes.profile,
     //   page: () => const ProfileView(),
