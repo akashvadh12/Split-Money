@@ -1,0 +1,14 @@
+
+
+
+
+
+
+
+PRODUCT_NAME = split_money
+
+
+PRODUCT_BUNDLE_IDENTIFIER = com.example.splitMoney
+
+
+PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
