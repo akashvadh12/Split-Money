@@ -10,7 +10,6 @@ void main() async {
 
   runApp(const SplitMoney());
 }
-
 class SplitMoney extends StatelessWidget {
   const SplitMoney({super.key});
 
@@ -23,7 +22,7 @@ class SplitMoney extends StatelessWidget {
       darkTheme: buildDarkTheme(),
       themeMode: ThemeMode.system,
        initialBinding: InitialBinding(),
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splash,
       getPages: AppPages.routes,
     
       // initialRoute: AppRoutes.splash,

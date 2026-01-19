@@ -6,11 +6,30 @@ import 'package:split_money/app/modules/home/home_binding.dart';
 import 'package:split_money/app/modules/home/home_view.dart';
 import 'package:split_money/app/modules/navigation/bindings/bottom_nav_binding.dart';
 import 'package:split_money/app/modules/navigation/views/main_screen.dart';
+import 'package:split_money/app/modules/splash/splash_binding.dart';
+import 'package:split_money/app/modules/splash/splash_screen.dart';
+
+import 'package:split_money/app/modules/Intro_screens/views/onboarding_view.dart';
+import 'package:split_money/app/modules/Intro_screens/bindings/onboarding_binding.dart';
+import 'package:split_money/main.dart';
 
 import 'app_routes.dart';
 
 class AppPages {
   static final routes = [
+    // Splash
+    GetPage(
+      name: AppRoutes.splash,
+      page: () => const SplashScreen(),
+      binding: SplashBinding(),
+    ),
+    // Onboarding
+    GetPage(
+      name: AppRoutes.onboarding,
+      page: () => const OnboardingView(),
+      binding: OnboardingBinding(),
+    ),
+    // Login
     GetPage(
       name: AppRoutes.login,
       page: () => const LoginScreen(),
@@ -47,63 +66,30 @@ class AppPages {
     //   page: () => const SignupView(),
     //   binding: AuthBinding(),
     // ),
+    // Forgot Password (uncomment and implement ForgotPasswordView and AuthBinding if available)
+    // GetPage(
+    //   name: AppRoutes.forgotPassword,
+    //   page: () => const ForgotPasswordView(),
+    //   binding: AuthBinding(),
+    // ),
+    // Location (uncomment and implement LocationView and LocationBinding if available)
     // GetPage(
     //   name: AppRoutes.location,
     //   page: () => const LocationView(),
     //   binding: LocationBinding(),
     // ),
+    // Main navigation (bottom nav)
     GetPage(
       name: AppRoutes.main,
       page: () => const MainScreen(),
       binding: BottomNavBinding(),
     ),
+    // Home
     GetPage(
       name: AppRoutes.home,
       page: () => const HomeScreen(),
       binding: HomeBinding(),
     ),
-    // GetPage(
-    //   name: AppRoutes.profile,
-    //   page: () => const ProfileView(),
-    //   binding: ProfileBinding(),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.editProfile,
-    //   page: () => const EditProfileView(),
-    //   binding: ProfileBinding(),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.changePassword,
-    //   page: () => const ChangePasswordView(),
-    //   binding: ProfileBinding(),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.aboutUs,
-    //   page: () => const AboutUsView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.lazyPut(() => CmsController());
-    //   }),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.contactUs,
-    //   page: () => const ContactUsView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.lazyPut(() => CmsController());
-    //   }),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.privacyPolicy,
-    //   page: () => const PrivacyPolicyView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.lazyPut(() => CmsController());
-    //   }),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.terms,
-    //   page: () => const TermsView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.lazyPut(() => CmsController());
-    //   }),
-    // ),
+    // Add more routes as needed (profile, editProfile, etc.)
   ];
 }
