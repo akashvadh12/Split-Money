@@ -28,13 +28,10 @@ class MainScreen extends GetView<BottomNavController> {
         children: _screens,
       ),
 
-      bottomNavigationBar: SafeArea(
-        top: false,
-        child: CustomBottomNavBar(
-          controller: controller.notchBottomBarController,
-          onTap: controller.changeTab,
-          selectedIndex: controller.selectedIndex.value,
-        ),
+      bottomNavigationBar: CustomBottomNavBar(
+        controller: controller.notchBottomBarController,
+        onTap: controller.changeTab,
+        selectedIndex: controller.selectedIndex.value,
       ),
     );
   }
