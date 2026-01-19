@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:split_money/app/modules/home/home_view.dart';
 import 'package:split_money/app/modules/navigation/controllers/bottom_nav_controller.dart';
 import 'package:split_money/app/modules/navigation/widgets/custom_bottom_nav_bar.dart';
 
@@ -7,9 +8,9 @@ class MainScreen extends GetView<BottomNavController> {
   const MainScreen({super.key});
 
   static final List<Widget> _screens = [
-    // HomeView(),
-    // CategoriesView(),
-    // OrderListView(),
+    HomeScreen(),
+    // EventsScreen(),
+    // StatsScreen(),
     // ProfileView(),
   ];
 
