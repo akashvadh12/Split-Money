@@ -24,7 +24,8 @@ class ApiResult<T> {
     this.raw,
   });
 
-  factory ApiResult.success(T data, {
+  factory ApiResult.success(
+    T data, {
     String message = 'Success',
     int status = 1,
     dynamic raw,
@@ -38,10 +39,7 @@ class ApiResult<T> {
     );
   }
 
-  factory ApiResult.error(String message, {
-    int status = 0,
-    dynamic raw,
-  }) {
+  factory ApiResult.error(String message, {int status = 0, dynamic raw}) {
     return ApiResult(
       success: false,
       status: status,
@@ -52,11 +50,7 @@ class ApiResult<T> {
 }
 
 /// Content type for API requests
-enum ContentType {
-  json,
-  formUrlEncoded,
-  multipart,
-}
+enum ContentType { json, formUrlEncoded, multipart }
 
 /// Base API Service with CRUD operations and centralized error handling
 class BaseApiService {
@@ -198,7 +192,9 @@ class BaseApiService {
           requestBody = jsonEncode(body);
           break;
         case ContentType.formUrlEncoded:
-          requestBody = body.map((key, value) => MapEntry(key, value.toString()));
+          requestBody = body.map(
+            (key, value) => MapEntry(key, value.toString()),
+          );
           break;
         case ContentType.multipart:
           // Handled separately in _sendMultipartRequest
@@ -274,8 +270,8 @@ class BaseApiService {
     }
 
     final streamedResponse = await request.send().timeout(
-          const Duration(seconds: _timeoutSeconds),
-        );
+      const Duration(seconds: _timeoutSeconds),
+    );
     final response = await http.Response.fromStream(streamedResponse);
 
     return _handleResponse(response, parser);
@@ -371,11 +367,7 @@ class BaseApiService {
         // Error case (status != 1)
         final errorMsg = message.isNotEmpty ? message : 'Request failed';
         _log('❌ API Error: $errorMsg (status: $apiStatus)', isError: true);
-        return ApiResult.error(
-          errorMsg,
-          status: apiStatus,
-          raw: decoded,
-        );
+        return ApiResult.error(errorMsg, status: apiStatus, raw: decoded);
       }
     } catch (e, stackTrace) {
       _log('❌ JSON parsing error: $e', isError: true);
@@ -474,7 +466,10 @@ class BaseApiService {
   }
 
   /// Handle critical errors
-  static void _handleCriticalError(String message, {String errorType = 'error'}) {
+  static void _handleCriticalError(
+    String message, {
+    String errorType = 'error',
+  }) {
     final isFirstError = AppState.instance.setCriticalError();
 
     if (!isFirstError) {
@@ -496,7 +491,11 @@ class BaseApiService {
   // ============================================================================
 
   /// Log request details
-  static void _logRequest(String method, String endpoint, {Map<String, dynamic>? body}) {
+  static void _logRequest(
+    String method,
+    String endpoint, {
+    Map<String, dynamic>? body,
+  }) {
     _log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     _log('📤 REQUEST: $method');
     _log('🔗 Endpoint: $endpoint');
@@ -517,7 +516,7 @@ class BaseApiService {
   static void _log(String message, {bool isError = false}) {
     final timestamp = DateTime.now().toIso8601String();
     final logMessage = '$_logTag [$timestamp] $message';
-    
+
     if (isError) {
       log(logMessage, name: 'API_ERROR');
     } else {
