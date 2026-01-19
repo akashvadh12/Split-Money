@@ -11,14 +11,18 @@ class HomeScreen extends GetView<HomeController> {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF1A1C1E) : const Color(0xFFF5F5F5),
+      backgroundColor: isDark
+          ? const Color(0xFF1A1C1E)
+          : const Color(0xFFF5F5F5),
       body: SafeArea(
         child: Column(
           children: [
             // Header Section
             Container(
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF2F2F2F) : const Color(0xFF2F2F2F),
+                color: isDark
+                    ? const Color(0xFF2F2F2F)
+                    : const Color(0xFF2F2F2F),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(32),
                   bottomRight: Radius.circular(32),
@@ -60,14 +64,16 @@ class HomeScreen extends GetView<HomeController> {
                               ),
                             ),
                             const SizedBox(height: 4),
-                            Obx(() => Text(
-                              controller.userName,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                            Obx(
+                              () => Text(
+                                controller.userName,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
-                            )),
+                            ),
                           ],
                         ),
                       ),
@@ -165,9 +171,9 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // Upcoming Events Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,7 +183,9 @@ class HomeScreen extends GetView<HomeController> {
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : const Color(0xFF2F2F2F),
+                            color: isDark
+                                ? Colors.white
+                                : const Color(0xFF2F2F2F),
                           ),
                         ),
                         TextButton(
@@ -187,7 +195,9 @@ class HomeScreen extends GetView<HomeController> {
                               Text(
                                 'View All',
                                 style: TextStyle(
-                                  color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                                  color: isDark
+                                      ? const Color(0xFF8A9291)
+                                      : const Color(0xFF707978),
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -196,29 +206,33 @@ class HomeScreen extends GetView<HomeController> {
                               Icon(
                                 Icons.arrow_forward_ios,
                                 size: 12,
-                                color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                                color: isDark
+                                    ? const Color(0xFF8A9291)
+                                    : const Color(0xFF707978),
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Event Cards
-                    Obx(() => ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: controller.upcomingEvents.length,
-                      itemBuilder: (context, index) {
-                        final event = controller.upcomingEvents[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: _buildEventCard(event, isDark),
-                        );
-                      },
-                    )),
+                    Obx(
+                      () => ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.upcomingEvents.length,
+                        itemBuilder: (context, index) {
+                          final event = controller.upcomingEvents[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: _buildEventCard(event, isDark),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -226,19 +240,8 @@ class HomeScreen extends GetView<HomeController> {
           ],
         ),
       ),
-      
-      // Bottom Navigation Bar
-      bottomNavigationBar: _buildBottomNavBar(isDark),
-      
-      // Floating Action Button
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigate to create event
-        },
-        backgroundColor: const Color(0xFF2F2F2F),
-        child: const Icon(Icons.add, color: Colors.white, size: 32),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+      // ...existing code...
     );
   }
 
@@ -276,7 +279,9 @@ class HomeScreen extends GetView<HomeController> {
               ),
               Icon(
                 Icons.more_horiz,
-                color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                color: isDark
+                    ? const Color(0xFF8A9291)
+                    : const Color(0xFF707978),
                 size: 20,
               ),
             ],
@@ -305,8 +310,8 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   Widget _buildEventCard(Event event, bool isDark) {
-    Color progressColor = event.title.contains('Bistro') 
-        ? const Color(0xFFB794F6) 
+    Color progressColor = event.title.contains('Bistro')
+        ? const Color(0xFFB794F6)
         : const Color(0xFF80D1C8);
 
     return GestureDetector(
@@ -316,13 +321,15 @@ class HomeScreen extends GetView<HomeController> {
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF222427) : Colors.white,
           borderRadius: BorderRadius.circular(24),
-          boxShadow: isDark ? [] : [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          boxShadow: isDark
+              ? []
+              : [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,7 +362,9 @@ class HomeScreen extends GetView<HomeController> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : const Color(0xFF2F2F2F),
+                          color: isDark
+                              ? Colors.white
+                              : const Color(0xFF2F2F2F),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -363,7 +372,9 @@ class HomeScreen extends GetView<HomeController> {
                         event.date,
                         style: TextStyle(
                           fontSize: 13,
-                          color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                          color: isDark
+                              ? const Color(0xFF8A9291)
+                              : const Color(0xFF707978),
                         ),
                       ),
                     ],
@@ -372,7 +383,9 @@ class HomeScreen extends GetView<HomeController> {
                 // More Icon
                 Icon(
                   Icons.more_vert,
-                  color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                  color: isDark
+                      ? const Color(0xFF8A9291)
+                      : const Color(0xFF707978),
                 ),
               ],
             ),
@@ -393,7 +406,9 @@ class HomeScreen extends GetView<HomeController> {
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : const Color(0xFF2F2F2F),
+                            color: isDark
+                                ? Colors.white
+                                : const Color(0xFF2F2F2F),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -403,7 +418,9 @@ class HomeScreen extends GetView<HomeController> {
                             'of \$${event.target.toStringAsFixed(0)}',
                             style: TextStyle(
                               fontSize: 14,
-                              color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                              color: isDark
+                                  ? const Color(0xFF8A9291)
+                                  : const Color(0xFF707978),
                             ),
                           ),
                         ),
@@ -415,7 +432,9 @@ class HomeScreen extends GetView<HomeController> {
                       width: 200,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF404040) : const Color(0xFFE0E0E0),
+                        color: isDark
+                            ? const Color(0xFF404040)
+                            : const Color(0xFFE0E0E0),
                         borderRadius: BorderRadius.circular(3),
                       ),
                       child: FractionallySizedBox(
@@ -444,7 +463,9 @@ class HomeScreen extends GetView<HomeController> {
                           color: const Color(0xFFCCE5E3),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: isDark ? const Color(0xFF222427) : Colors.white,
+                            color: isDark
+                                ? const Color(0xFF222427)
+                                : Colors.white,
                             width: 2,
                           ),
                         ),
@@ -466,50 +487,5 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  Widget _buildBottomNavBar(bool isDark) {
-    return Container(
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF222427) : Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        selectedItemColor: const Color(0xFF2F2F2F),
-        unselectedItemColor: isDark ? const Color(0xFF8A9291) : const Color(0xFFB0B0B0),
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        currentIndex: 0,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'HOME',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event),
-            label: 'EVENTS',
-          ),
-          BottomNavigationBarItem(
-            icon: SizedBox(width: 48),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
-            label: 'STATS',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'SETTINGS',
-          ),
-        ],
-      ),
-    );
-  }
+  // ...existing code...
 }
