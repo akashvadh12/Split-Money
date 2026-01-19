@@ -14,231 +14,229 @@ class HomeScreen extends GetView<HomeController> {
       backgroundColor: isDark
           ? const Color(0xFF1A1C1E)
           : const Color(0xFFF5F5F5),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Header Section
-            Container(
-              decoration: BoxDecoration(
-                color: isDark
-                    ? const Color(0xFF2F2F2F)
-                    : const Color(0xFF2F2F2F),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(32),
-                  bottomRight: Radius.circular(32),
-                ),
-              ),
-              padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
-              child: Column(
-                children: [
-                  // Top Bar
-                  Row(
-                    children: [
-                      // Profile Avatar
-                      Container(
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: const Color(0xFFCCE5E3),
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          color: Color(0xFF2F2F2F),
-                          size: 32,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      // Welcome Text
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'WELCOME BACK',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white.withOpacity(0.7),
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Obx(
-                              () => Text(
-                                controller.userName,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Notification Icon
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF404040),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.notifications_outlined,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      // Search Icon
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF404040),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.search,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  // Dashboard Title
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Dashboard',
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF404040),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(
-                          Icons.more_horiz,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+      body: Column(
+        children: [
+          // Header Section
+          Container(
+            decoration: BoxDecoration(
+              color: isDark
+                  ? const Color(0xFF2F2F2F)
+                  : const Color(0xFF2F2F2F),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
               ),
             ),
-
-            // Content Section
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
+            child: Column(
+              children: [
+                // Top Bar
+                Row(
                   children: [
-                    // Stats Cards
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildStatCard(
-                            icon: Icons.calendar_today_outlined,
-                            label: 'Active Events',
-                            value: '12',
-                            color: const Color(0xFFE8D4F8),
-                            isDark: isDark,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildStatCard(
-                            icon: Icons.account_balance_wallet_outlined,
-                            label: 'Total Collected',
-                            value: '\$4,850',
-                            color: const Color(0xFFCCE5E3),
-                            isDark: isDark,
-                          ),
-                        ),
-                      ],
+                    // Profile Avatar
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: const Color(0xFFCCE5E3),
+                      ),
+                      child: const Icon(
+                        Icons.person,
+                        color: Color(0xFF2F2F2F),
+                        size: 32,
+                      ),
                     ),
-
-                    const SizedBox(height: 32),
-
-                    // Upcoming Events Header
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Upcoming Events',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: isDark
-                                ? Colors.white
-                                : const Color(0xFF2F2F2F),
+                    const SizedBox(width: 16),
+                    // Welcome Text
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'WELCOME BACK',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white.withOpacity(0.7),
+                              letterSpacing: 0.5,
+                            ),
                           ),
-                        ),
-                        TextButton(
-                          onPressed: controller.navigateToAllEvents,
-                          child: Row(
-                            children: [
-                              Text(
-                                'View All',
-                                style: TextStyle(
-                                  color: isDark
-                                      ? const Color(0xFF8A9291)
-                                      : const Color(0xFF707978),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                          const SizedBox(height: 4),
+                          Obx(
+                            () => Text(
+                              controller.userName,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                              const SizedBox(width: 4),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 12,
-                                color: isDark
-                                    ? const Color(0xFF8A9291)
-                                    : const Color(0xFF707978),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-
-                    const SizedBox(height: 16),
-
-                    // Event Cards
-                    Obx(
-                      () => ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.upcomingEvents.length,
-                        itemBuilder: (context, index) {
-                          final event = controller.upcomingEvents[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: _buildEventCard(event, isDark),
-                          );
-                        },
+                    // Notification Icon
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF404040),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.notifications_outlined,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    // Search Icon
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF404040),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 24,
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 32),
+                // Dashboard Title
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Dashboard',
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF404040),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.more_horiz,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+      
+          // Content Section
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Stats Cards
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildStatCard(
+                          icon: Icons.calendar_today_outlined,
+                          label: 'Active Events',
+                          value: '12',
+                          color: const Color(0xFFE8D4F8),
+                          isDark: isDark,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _buildStatCard(
+                          icon: Icons.account_balance_wallet_outlined,
+                          label: 'Total Collected',
+                          value: '\$4,850',
+                          color: const Color(0xFFCCE5E3),
+                          isDark: isDark,
+                        ),
+                      ),
+                    ],
+                  ),
+      
+                  const SizedBox(height: 32),
+      
+                  // Upcoming Events Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Upcoming Events',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: isDark
+                              ? Colors.white
+                              : const Color(0xFF2F2F2F),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: controller.navigateToAllEvents,
+                        child: Row(
+                          children: [
+                            Text(
+                              'View All',
+                              style: TextStyle(
+                                color: isDark
+                                    ? const Color(0xFF8A9291)
+                                    : const Color(0xFF707978),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 12,
+                              color: isDark
+                                  ? const Color(0xFF8A9291)
+                                  : const Color(0xFF707978),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+      
+                  const SizedBox(height: 16),
+      
+                  // Event Cards
+                  Obx(
+                    () => ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.upcomingEvents.length,
+                      itemBuilder: (context, index) {
+                        final event = controller.upcomingEvents[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: _buildEventCard(event, isDark),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
 
       // ...existing code...

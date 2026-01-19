@@ -5,7 +5,7 @@ import 'package:split_money/app/modules/auth/auth_register_view.dart';
 import 'package:split_money/app/modules/home/home_binding.dart';
 import 'package:split_money/app/modules/home/home_view.dart';
 import 'package:split_money/app/modules/navigation/bindings/bottom_nav_binding.dart';
-import 'package:split_money/app/modules/navigation/views/main_screen.dart';
+import 'package:split_money/app/modules/navigation/views/main_screen.dart' show MainScreen;
 import 'package:split_money/app/modules/splash/splash_binding.dart';
 import 'package:split_money/app/modules/splash/splash_screen.dart';
 
