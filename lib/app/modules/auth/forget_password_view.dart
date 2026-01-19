@@ -55,6 +55,16 @@ class ForgetPasswordScreen extends StatelessWidget {
 
               // Mode toggle
               Obx(() {
+                final selectedColor = isDark
+                    ? Theme.of(context).colorScheme.primaryContainer
+                    : const Color(0xFF2F2F2F);
+                final unselectedColor = isDark
+                    ? Colors.transparent
+                    : Colors.transparent;
+                final selectedTextColor = Colors.white;
+                final unselectedTextColor = isDark
+                    ? Theme.of(context).colorScheme.onSurface
+                    : const Color(0xFF2F2F2F);
                 return Row(
                   children: [
                     Expanded(
@@ -62,13 +72,28 @@ class ForgetPasswordScreen extends StatelessWidget {
                         onPressed: () => controller.fpSetModeEmail(),
                         style: OutlinedButton.styleFrom(
                           backgroundColor: controller.fpUseEmail.value
-                              ? Theme.of(context).primaryColor
-                              : null,
+                              ? selectedColor
+                              : unselectedColor,
                           foregroundColor: controller.fpUseEmail.value
-                              ? Colors.white
-                              : null,
+                              ? selectedTextColor
+                              : unselectedTextColor,
+                          side: BorderSide(
+                            color: controller.fpUseEmail.value
+                                ? selectedColor
+                                : (isDark
+                                      ? Colors.white24
+                                      : const Color(0xFF2F2F2F)),
+                            width: 1.5,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
-                        child: const Text('Use Email'),
+                        child: const Text(
+                          'Use Email',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -77,13 +102,28 @@ class ForgetPasswordScreen extends StatelessWidget {
                         onPressed: () => controller.fpSetModeMobile(),
                         style: OutlinedButton.styleFrom(
                           backgroundColor: controller.fpUseEmail.value
-                              ? null
-                              : Theme.of(context).primaryColor,
+                              ? unselectedColor
+                              : selectedColor,
                           foregroundColor: controller.fpUseEmail.value
-                              ? null
-                              : Colors.white,
+                              ? unselectedTextColor
+                              : selectedTextColor,
+                          side: BorderSide(
+                            color: !controller.fpUseEmail.value
+                                ? selectedColor
+                                : (isDark
+                                      ? Colors.white24
+                                      : const Color(0xFF2F2F2F)),
+                            width: 1.5,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
-                        child: const Text('Use Mobile'),
+                        child: const Text(
+                          'Use Mobile',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
                   ],
@@ -206,13 +246,34 @@ class ForgetPasswordScreen extends StatelessWidget {
                   onPressed: controller.fpIsLoading.value
                       ? null
                       : controller.fpSendOtp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2F2F2F),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 0,
+                    disabledBackgroundColor: const Color(0xFF707978),
+                  ),
                   child: controller.fpIsLoading.value
                       ? const SizedBox(
-                          height: 18,
-                          width: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
                         )
-                      : const Text('Next'),
+                      : const Text(
+                          'Next',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                 ),
               ),
 
@@ -311,22 +372,45 @@ class ForgetPasswordScreen extends StatelessWidget {
 
                             const SizedBox(height: 16),
 
-
                             // Only show Submit OTP if OTP area is visible
                             if (controller.fpShowOtp.value)
                               ElevatedButton(
                                 onPressed: controller.fpIsLoading.value
                                     ? null
                                     : controller.fpVerifyOtp,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF2F2F2F),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 18,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  elevation: 0,
+                                  disabledBackgroundColor: const Color(
+                                    0xFF707978,
+                                  ),
+                                ),
                                 child: controller.fpIsLoading.value
                                     ? const SizedBox(
-                                        height: 18,
-                                        width: 18,
+                                        height: 20,
+                                        width: 20,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                Colors.white,
+                                              ),
                                         ),
                                       )
-                                    : const Text('Submit OTP'),
+                                    : const Text(
+                                        'Submit OTP',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                               ),
 
                             TextButton(

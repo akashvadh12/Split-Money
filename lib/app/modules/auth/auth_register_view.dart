@@ -50,24 +50,22 @@ class SignupScreen extends GetView<SignupController> {
                           ),
                         ),
                         Row(
-                          mainAxisAlignment: .start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
                               "or already have an account?",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.7),
+                              ),
                             ),
+
                             TextButton(
                               onPressed: () {
                                 Get.offNamedUntil('/login', (route) => false);
                               },
                               child: Text(
                                 'Login',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white,
-                                  decorationThickness: 1.5,
-                                ),
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
                           ],

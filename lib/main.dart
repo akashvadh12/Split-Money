@@ -26,7 +26,7 @@ class SplitMoney extends StatelessWidget {
       darkTheme: buildDarkTheme(),
       themeMode: ThemeMode.system,
       initialBinding: InitialBinding(),
-      initialRoute: AppRoutes.main,
+      initialRoute: AppRoutes.login,
       getPages: AppPages.routes,
 
       // initialRoute: AppRoutes.splash,
