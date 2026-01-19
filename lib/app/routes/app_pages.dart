@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:split_money/app/modules/auth/auth_binding.dart';
+import 'package:split_money/app/modules/auth/auth_view.dart';
 import 'package:split_money/app/modules/home/home_view.dart';
 import 'package:split_money/main.dart';
 
@@ -7,10 +9,16 @@ import 'app_routes.dart';
 class AppPages {
   static final routes = [
     GetPage(
-      name: AppRoutes.splash,
-      page: () => const HomeView(),
-      // binding: SplashBinding(),
+      name: AppRoutes.login,
+      page: () => const LoginScreen(),
+      binding: LoginBinding(),
     ),
+    // GetPage(
+
+    //   name: AppRoutes.splash,
+    //   page: () => const HomeView(),
+    //   // binding: SplashBinding(),
+    // ),
     // GetPage(
     //   name: AppRoutes.onboarding,
     //   page: () => const OnboardingView(),

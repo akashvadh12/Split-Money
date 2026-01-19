@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/core/theme/theme.dart';
+import 'package:split_money/app/modules/InitialBinding/initial_binding.dart';
 import 'package:split_money/app/routes/app_pages.dart';
 import 'package:split_money/app/routes/app_routes.dart';
 
@@ -21,7 +22,8 @@ class SplitMoney extends StatelessWidget {
       theme: buildLightTheme(),
       darkTheme: buildDarkTheme(),
       themeMode: ThemeMode.system,
-      initialRoute: AppRoutes.splash,
+       initialBinding: InitialBinding(),
+      initialRoute: AppRoutes.login,
       getPages: AppPages.routes,
       defaultTransition: Transition.cupertino,
     );
