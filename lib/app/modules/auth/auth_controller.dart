@@ -67,7 +67,7 @@ class LoginController extends GetxController {
             passwordController.text == "Test@1234") ||
         (emailController.text == "akash@gmail.com" &&
             passwordController.text == "Test@123")) {
-      Get.offAllNamed('/home');
+      Get.offAllNamed('/main');
       return;
     }
 
@@ -93,7 +93,7 @@ class LoginController extends GetxController {
         );
 
         // Navigate to home screen (replace with your home route)
-        Get.offAllNamed('/home');
+        Get.offAllNamed('/main');
       } else {
         Get.snackbar(
           'Login Failed',
