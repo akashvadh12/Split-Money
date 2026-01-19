@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:split_money/app/modules/auth/auth_service.dart';
 import 'package:split_money/app/core/theme/theme.dart';
 import 'package:split_money/app/modules/auth/auth_register_view.dart';
+import 'package:split_money/app/modules/auth/forget_password_view.dart';
 
 // ==================== LOGIN CONTROLLER ====================
 class LoginController extends GetxController {
@@ -19,10 +20,26 @@ class LoginController extends GetxController {
   final RxString emailError = ''.obs;
   final RxString passwordError = ''.obs;
 
+  // Forgot-password (fp) state & controllers (kept inside LoginController)
+  final fpEmailController = TextEditingController();
+  final fpMobileController = TextEditingController();
+  final fpOtpController = TextEditingController();
+
+  final RxBool fpUseEmail = true.obs;
+  final RxBool fpShowOtp = false.obs;
+  final RxBool fpIsLoading = false.obs;
+
+  final RxString fpEmailError = ''.obs;
+  final RxString fpMobileError = ''.obs;
+  final RxString fpOtpError = ''.obs;
+
   @override
   void onClose() {
     emailController.dispose();
     passwordController.dispose();
+    fpEmailController.dispose();
+    fpMobileController.dispose();
+    fpOtpController.dispose();
     super.onClose();
   }
 
@@ -112,24 +129,89 @@ class LoginController extends GetxController {
     }
   }
 
-  void forgotPassword() {
-    Get.snackbar(
-      'Info',
-      'Forgot password feature will be available soon',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.blue,
-      colorText: Colors.white,
-      margin: const EdgeInsets.all(16),
-      borderRadius: 8,
-    );
-  }
-
   void navigateToSignup() {
     // Ensure SignupController is registered, then navigate
     if (!Get.isRegistered<SignupController>()) {
       Get.put(SignupController());
     }
     Get.to(() => const SignupScreen());
+  }
+
+  void navigateToForgetPassword() {
+    // Ensure LoginController is available (should be) and navigate
+    Get.to(() => const ForgetPasswordScreen());
+  }
+
+  // Forgot-password behavior implemented as methods below (use GetX state above)
+  void fpSetModeEmail() => fpUseEmail.value = true;
+  void fpSetModeMobile() => fpUseEmail.value = false;
+
+  bool _fpValidateContact() {
+    fpEmailError.value = '';
+    fpMobileError.value = '';
+
+    if (fpUseEmail.value) {
+      if (fpEmailController.text.trim().isEmpty) {
+        fpEmailError.value = 'Email is required';
+        return false;
+      }
+      if (!GetUtils.isEmail(fpEmailController.text.trim())) {
+        fpEmailError.value = 'Please enter a valid email';
+        return false;
+      }
+    } else {
+      if (fpMobileController.text.trim().isEmpty) {
+        fpMobileError.value = 'Mobile number is required';
+        return false;
+      }
+      if (fpMobileController.text.trim().length < 6) {
+        fpMobileError.value = 'Enter a valid mobile number';
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  void fpSendOtp() {
+    if (!_fpValidateContact()) return;
+
+    fpIsLoading.value = true;
+    Future.delayed(const Duration(milliseconds: 600), () {
+      fpIsLoading.value = false;
+      fpShowOtp.value = true;
+      Get.snackbar(
+        'OTP sent',
+        fpUseEmail.value
+            ? 'Check your email for the OTP'
+            : 'Check your mobile for the OTP',
+        snackPosition: SnackPosition.TOP,
+        margin: const EdgeInsets.all(16),
+      );
+    });
+  }
+
+  void fpVerifyOtp() {
+    fpOtpError.value = '';
+    if (fpOtpController.text.trim().isEmpty ||
+        fpOtpController.text.trim().length < 3) {
+      fpOtpError.value = 'Enter the OTP';
+      return;
+    }
+
+    fpIsLoading.value = true;
+    Future.delayed(const Duration(milliseconds: 600), () {
+      fpIsLoading.value = false;
+      Get.snackbar(
+        'Success',
+        fpUseEmail.value
+            ? 'Password reset link sent to your email'
+            : 'Password sent to your mobile',
+        snackPosition: SnackPosition.TOP,
+        margin: const EdgeInsets.all(16),
+      );
+      Get.back();
+    });
   }
 }
 
