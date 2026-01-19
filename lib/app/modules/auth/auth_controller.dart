@@ -1,14 +1,13 @@
 // ==================== LOGIN CONTROLLER ====================
-// File: lib/controllers/login_controller.dart
+// File: lib/app/modules/auth/auth_controller.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/auth/auth_service.dart';
-import 'package:split_money/app/core/theme/theme.dart';
 import 'package:split_money/app/modules/auth/auth_register_view.dart';
 import 'package:split_money/app/modules/auth/forget_password_view.dart';
 
-// ==================== LOGIN CONTROLLER ====================
 class LoginController extends GetxController {
   final AuthService _authService = Get.find<AuthService>();
 
@@ -20,10 +19,18 @@ class LoginController extends GetxController {
   final RxString emailError = ''.obs;
   final RxString passwordError = ''.obs;
 
-  // Forgot-password (fp) state & controllers (kept inside LoginController)
+  // ==================== FORGOT PASSWORD ====================
   final fpEmailController = TextEditingController();
   final fpMobileController = TextEditingController();
-  final fpOtpController = TextEditingController();
+
+  final FocusNode fpEmailFocusNode = FocusNode();
+  final FocusNode fpMobileFocusNode = FocusNode();
+
+  final List<TextEditingController> fpOtpControllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
+  final List<FocusNode> fpOtpFocusNodes = List.generate(6, (_) => FocusNode());
 
   final RxBool fpUseEmail = true.obs;
   final RxBool fpShowOtp = false.obs;
@@ -33,60 +40,57 @@ class LoginController extends GetxController {
   final RxString fpMobileError = ''.obs;
   final RxString fpOtpError = ''.obs;
 
+  final RegExp _emailRegex = RegExp(
+    r'^[\w\.\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$',
+  );
+
+  // ==================== LIFECYCLE ====================
   @override
   void onClose() {
     emailController.dispose();
     passwordController.dispose();
+
     fpEmailController.dispose();
     fpMobileController.dispose();
-    fpOtpController.dispose();
+    fpEmailFocusNode.dispose();
+    fpMobileFocusNode.dispose();
+
+    for (final c in fpOtpControllers) {
+      c.dispose();
+    }
+    for (final f in fpOtpFocusNodes) {
+      f.dispose();
+    }
+
     super.onClose();
   }
 
+  // ==================== LOGIN ====================
   void togglePasswordVisibility() {
     obscurePassword.value = !obscurePassword.value;
   }
 
   bool _validateInputs() {
-    bool isValid = true;
     emailError.value = '';
     passwordError.value = '';
+    bool valid = true;
 
-    // Email validation
-    if (emailController.text.trim().isEmpty) {
-      emailError.value = 'Email is required';
-      isValid = false;
-    } else if (!GetUtils.isEmail(emailController.text.trim())) {
-      emailError.value = 'Please enter a valid email';
-      isValid = false;
+    if (!GetUtils.isEmail(emailController.text.trim())) {
+      emailError.value = 'Enter a valid email';
+      valid = false;
     }
 
-    // Password validation
-    if (passwordController.text.isEmpty) {
-      passwordError.value = 'Password is required';
-      isValid = false;
-    } else if (passwordController.text.length < 6) {
+    if (passwordController.text.length < 6) {
       passwordError.value = 'Password must be at least 6 characters';
-      isValid = false;
+      valid = false;
     }
 
-    return isValid;
+    return valid;
   }
 
+  /// ✅ RESTORED (FIX)
   Future<void> login() async {
-    // If validation fails, stop early.
-    if (!_validateInputs()) {
-      return;
-    }
-
-    // Dev/local dummy credentials — bypass auth during development.
-    if ((emailController.text == "dewashish@gmail.com" &&
-            passwordController.text == "Test@1234") ||
-        (emailController.text == "akash@gmail.com" &&
-            passwordController.text == "Test@123")) {
-      Get.offAllNamed('/home');
-      return;
-    }
+    if (!_validateInputs()) return;
 
     isLoading.value = true;
 
@@ -97,31 +101,16 @@ class LoginController extends GetxController {
       );
 
       if (result['success']) {
-        Get.snackbar(
-          'Success',
-          result['message'],
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Theme.of(
-            Get.context!,
-          ).success.withValues(alpha: 0.4),
-          colorText: Colors.white,
-          margin: const EdgeInsets.all(16),
-          borderRadius: 8,
-        );
-
-        // Navigate to home screen (replace with your home route)
         Get.offAllNamed('/main');
       } else {
         Get.snackbar(
-          'Login Failed',
+          'Login failed',
           result['message'],
           snackPosition: SnackPosition.TOP,
           backgroundColor: Theme.of(
             Get.context!,
-          ).colorScheme.error.withValues(alpha: 0.4),
+          ).colorScheme.error.withValues(alpha: 0.7),
           colorText: Colors.white,
-          margin: const EdgeInsets.all(16),
-          borderRadius: 8,
         );
       }
     } finally {
@@ -129,8 +118,8 @@ class LoginController extends GetxController {
     }
   }
 
+  // ==================== NAVIGATION ====================
   void navigateToSignup() {
-    // Ensure SignupController is registered, then navigate
     if (!Get.isRegistered<SignupController>()) {
       Get.put(SignupController());
     }
@@ -138,82 +127,78 @@ class LoginController extends GetxController {
   }
 
   void navigateToForgetPassword() {
-    // Ensure LoginController is available (should be) and navigate
     Get.to(() => const ForgetPasswordScreen());
   }
 
-  // Forgot-password behavior implemented as methods below (use GetX state above)
-  void fpSetModeEmail() => fpUseEmail.value = true;
-  void fpSetModeMobile() => fpUseEmail.value = false;
+  // ==================== FORGOT PASSWORD MODE SWITCH ====================
+  void fpSetModeEmail({bool requestFocus = true}) {
+    fpUseEmail.value = true;
+    _resetFpState();
+    if (requestFocus) _forceKeyboardSwitch(fpEmailFocusNode);
+  }
 
+  void fpSetModeMobile({bool requestFocus = true}) {
+    fpUseEmail.value = false;
+    _resetFpState();
+    if (requestFocus) _forceKeyboardSwitch(fpMobileFocusNode);
+  }
+
+  void _resetFpState() {
+    fpEmailError.value = '';
+    fpMobileError.value = '';
+    fpOtpError.value = '';
+    fpShowOtp.value = false;
+
+    for (final c in fpOtpControllers) {
+      c.clear();
+    }
+  }
+
+  void _forceKeyboardSwitch(FocusNode node) {
+    FocusManager.instance.primaryFocus?.unfocus();
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 120), () {
+        if (!node.hasFocus) node.requestFocus();
+      });
+    });
+  }
+
+  // ==================== FORGOT PASSWORD FLOW ====================
   bool _fpValidateContact() {
     fpEmailError.value = '';
     fpMobileError.value = '';
 
     if (fpUseEmail.value) {
-      if (fpEmailController.text.trim().isEmpty) {
-        fpEmailError.value = 'Email is required';
-        return false;
-      }
-      if (!GetUtils.isEmail(fpEmailController.text.trim())) {
-        fpEmailError.value = 'Please enter a valid email';
+      if (!_emailRegex.hasMatch(fpEmailController.text.trim())) {
+        fpEmailError.value = 'Enter a valid email';
         return false;
       }
     } else {
-      if (fpMobileController.text.trim().isEmpty) {
-        fpMobileError.value = 'Mobile number is required';
-        return false;
-      }
-      if (fpMobileController.text.trim().length < 6) {
+      if (!RegExp(r'^\d{6,15}$').hasMatch(fpMobileController.text.trim())) {
         fpMobileError.value = 'Enter a valid mobile number';
         return false;
       }
     }
-
     return true;
   }
 
   void fpSendOtp() {
     if (!_fpValidateContact()) return;
-
-    fpIsLoading.value = true;
-    Future.delayed(const Duration(milliseconds: 600), () {
-      fpIsLoading.value = false;
-      fpShowOtp.value = true;
-      Get.snackbar(
-        'OTP sent',
-        fpUseEmail.value
-            ? 'Check your email for the OTP'
-            : 'Check your mobile for the OTP',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Theme.of(Get.context!).success.withValues(alpha: 0.4),
-        colorText: Colors.white,
-        margin: const EdgeInsets.all(16),
-      );
+    fpShowOtp.value = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fpOtpFocusNodes.first.requestFocus();
     });
   }
 
   void fpVerifyOtp() {
-    fpOtpError.value = '';
-    if (fpOtpController.text.trim().isEmpty ||
-        fpOtpController.text.trim().length < 3) {
-      fpOtpError.value = 'Enter the OTP';
+    final otp = fpOtpControllers.map((c) => c.text).join();
+    if (!RegExp(r'^\d{6}$').hasMatch(otp)) {
+      fpOtpError.value = 'Enter 6-digit OTP';
       return;
     }
-
-    fpIsLoading.value = true;
-    Future.delayed(const Duration(milliseconds: 600), () {
-      fpIsLoading.value = false;
-      Get.snackbar(
-        'Success',
-        fpUseEmail.value
-            ? 'Password reset link sent to your email'
-            : 'Password sent to your mobile',
-        snackPosition: SnackPosition.TOP,
-        margin: const EdgeInsets.all(16),
-      );
-      Get.back();
-    });
+    Get.back();
   }
 }
 
@@ -244,54 +229,25 @@ class SignupController extends GetxController {
     super.onClose();
   }
 
-  void togglePassword() => obscurePassword.value = !obscurePassword.value;
-  void toggleConfirm() => obscureConfirm.value = !obscureConfirm.value;
-
-  bool validate() {
-    var valid = true;
-    fullNameError.value = '';
-    emailError.value = '';
-    mobileError.value = '';
-    passwordError.value = '';
-    confirmError.value = '';
-
-    if (fullNameController.text.trim().isEmpty) {
-      fullNameError.value = 'Full name is required';
-      valid = false;
-    }
-    if (emailController.text.trim().isEmpty ||
-        !GetUtils.isEmail(emailController.text.trim())) {
-      emailError.value = 'Valid email is required';
-      valid = false;
-    }
-    if (mobileController.text.trim().isEmpty) {
-      mobileError.value = 'Mobile number is required';
-      valid = false;
-    }
-    if (passwordController.text.length < 6) {
-      passwordError.value = 'Password must be at least 6 characters';
-      valid = false;
-    }
-    if (confirmController.text != passwordController.text) {
-      confirmError.value = 'Passwords do not match';
-      valid = false;
-    }
-
-    return valid;
+  void togglePassword() {
+    obscurePassword.value = !obscurePassword.value;
   }
 
+  void toggleConfirm() {
+    obscureConfirm.value = !obscureConfirm.value;
+  }
+
+  bool validate() {
+    if (confirmController.text != passwordController.text) {
+      confirmError.value = 'Passwords do not match';
+      return false;
+    }
+    return true;
+  }
+
+  /// ✅ RESTORED (FIX)
   void submit() {
     if (!validate()) return;
-
-    Get.snackbar(
-      'Account created',
-      'Your account has been created successfully',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Theme.of(Get.context!).success.withValues(alpha: 0.15),
-      colorText: Colors.white,
-      margin: const EdgeInsets.all(16),
-    );
-
     Get.back();
   }
 }

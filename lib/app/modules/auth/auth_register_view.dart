@@ -39,6 +39,7 @@ class SignupScreen extends GetView<SignupController> {
                     ),
                     const SizedBox(height: 16),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Join Split Money to manage group contributions easily.',
