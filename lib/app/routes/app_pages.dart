@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/auth/auth_binding.dart';
-import 'package:split_money/app/modules/auth/auth_view.dart';
+import 'package:split_money/app/modules/auth/auth_login_view.dart';
+import 'package:split_money/app/modules/auth/auth_register_view.dart';
 import 'package:split_money/app/modules/home/home_binding.dart';
 import 'package:split_money/app/modules/home/home_view.dart';
 import 'package:split_money/app/modules/navigation/bindings/bottom_nav_binding.dart';
@@ -34,7 +35,32 @@ class AppPages {
       page: () => const LoginScreen(),
       binding: LoginBinding(),
     ),
-    // Signup (uncomment and implement SignupView and AuthBinding if available)
+    GetPage(
+      name: AppRoutes.signup,
+      page: () => const SignupScreen(),
+      binding: SignupBinding(),
+    ),
+    // GetPage(
+
+    //   name: AppRoutes.splash,
+    //   page: () => const HomeView(),
+    //   // binding: SplashBinding(),
+    // ),
+    // GetPage(
+    //   name: AppRoutes.onboarding,
+    //   page: () => const OnboardingView(),
+    //   binding: OnboardingBinding(),
+    // ),
+    // GetPage(
+    //   name: AppRoutes.login,
+    //   page: () => const LoginView(),
+    //   binding: AuthBinding(),
+    // ),
+    // GetPage(
+    //   name: AppRoutes.forgotPassword,
+    //   page: () => const ForgotPasswordView(),
+    //   binding: AuthBinding(),
+    // ),
     // GetPage(
     //   name: AppRoutes.signup,
     //   page: () => const SignupView(),

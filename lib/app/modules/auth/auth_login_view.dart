@@ -25,28 +25,15 @@ class LoginScreen extends GetView<LoginController> {
                     bottomRight: Radius.circular(40),
                   ),
                 ),
-                padding: const EdgeInsets.fromLTRB(32, 40, 32, 60),
+                padding: const EdgeInsets.fromLTRB(32, 30, 32, 50),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // App icon
-                    Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF404040),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Icon(
-                        Icons.receipt_long,
-                        color: Colors.white,
-                        size: 32,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    // Welcome text
+
+                    // Heading text
                     const Text(
-                      'Welcome\nBack',
+                      'Login to\nSplit Money',
                       style: TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
@@ -59,7 +46,7 @@ class LoginScreen extends GetView<LoginController> {
                       'Organize your group events and collect\ncontributions effortlessly.',
                       style: TextStyle(
                         fontSize: 15,
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         height: 1.4,
                       ),
                     ),
@@ -112,7 +99,9 @@ class LoginScreen extends GetView<LoginController> {
                           filled: true,
                           fillColor: isDark
                               ? const Color(0xFF222427)
-                              : theme.colorScheme.primary,
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: .1),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide: BorderSide.none,
@@ -176,7 +165,9 @@ class LoginScreen extends GetView<LoginController> {
                           filled: true,
                           fillColor: isDark
                               ? const Color(0xFF222427)
-                              : Colors.white,
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: .1),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide: BorderSide.none,
