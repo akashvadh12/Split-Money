@@ -23,8 +23,10 @@ class SplitMoney extends StatelessWidget {
       darkTheme: buildDarkTheme(),
       themeMode: ThemeMode.system,
        initialBinding: InitialBinding(),
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.home,
       getPages: AppPages.routes,
+    
+      // initialRoute: AppRoutes.splash,
       defaultTransition: Transition.cupertino,
     );
   }
