@@ -84,7 +84,7 @@ class LoginController extends GetxController {
             passwordController.text == "Test@1234") ||
         (emailController.text == "akash@gmail.com" &&
             passwordController.text == "Test@123")) {
-      Get.offAllNamed('/main');
+      Get.offAllNamed('/home');
       return;
     }
 
