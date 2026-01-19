@@ -65,8 +65,14 @@ class BaseApiService {
   static const int _maxRetries = 3;
 
   final String baseUrl;
+  final Future<String?> Function()? tokenProvider;
 
-  BaseApiService({this.baseUrl = NetworkConstantsUtil.baseUrl});
+  /// [tokenProvider] is a callback that returns the current auth token (if any).
+  /// Example: () async => await SecureStorage.getToken();
+  BaseApiService({
+    this.baseUrl = NetworkConstantsUtil.baseUrl,
+    this.tokenProvider,
+  });
 
   // ============================================================================
   // CRUD OPERATIONS
@@ -113,8 +119,9 @@ class BaseApiService {
     _logRequest('READ (GET)', uri.toString());
 
     return _executeWithRetry(() async {
+      final headers = await _buildHeaders();
       final response = await http
-          .get(uri, headers: _buildHeaders())
+          .get(uri, headers: headers)
           .timeout(const Duration(seconds: _timeoutSeconds));
 
       return _handleResponse(response, parser);
@@ -181,7 +188,7 @@ class BaseApiService {
     ContentType contentType = ContentType.json,
     T Function(dynamic)? parser,
   }) async {
-    final headers = _buildHeaders(contentType: contentType);
+    final headers = await _buildHeaders(contentType: contentType);
     dynamic requestBody;
 
     // Prepare request body based on content type
@@ -240,7 +247,7 @@ class BaseApiService {
     final request = http.MultipartRequest(method, uri);
 
     // Add headers (without Content-Type, MultipartRequest sets it automatically)
-    final headers = _buildHeaders();
+    final headers = await _buildHeaders();
     headers.remove('Content-Type');
     request.headers.addAll(headers);
 
@@ -275,17 +282,22 @@ class BaseApiService {
   }
 
   /// Build headers for API requests
-  Map<String, String> _buildHeaders({
+  Future<Map<String, String>> _buildHeaders({
     ContentType? contentType,
     Map<String, String>? additionalHeaders,
-  }) {
+  }) async {
     final headers = <String, String>{};
 
     // Add Authorization token if available
-    // NOTE: NetworkConstantsUtil.bearerToken was not defined; replace this with your app's auth token source.
-    // For now use an empty token to avoid compile errors.
-    final token = '';
-    if (token.isNotEmpty) {
+    String? token;
+    if (tokenProvider != null) {
+      try {
+        token = await tokenProvider!();
+      } catch (e) {
+        _log('⚠️ Token provider error: $e', isError: true);
+      }
+    }
+    if (token != null && token.isNotEmpty) {
       headers['Authorization'] = 'Bearer $token';
     }
 
