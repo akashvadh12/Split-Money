@@ -197,7 +197,7 @@ class LoginScreen extends GetView<LoginController> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: controller.forgotPassword,
+                        onPressed: controller.navigateToForgetPassword,
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(

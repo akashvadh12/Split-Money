@@ -11,7 +11,6 @@ import 'package:split_money/app/modules/splash/splash_screen.dart';
 
 import 'package:split_money/app/modules/Intro_screens/views/onboarding_view.dart';
 import 'package:split_money/app/modules/Intro_screens/bindings/onboarding_binding.dart';
-import 'package:split_money/main.dart';
 
 import 'app_routes.dart';
 

@@ -9,11 +9,12 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Direct navigation after delay
     Future.delayed(const Duration(seconds: 2), () {
+      // to test login, comment below and uncomment next line:
       Get.offAllNamed(AppRoutes.login);
-      // To test onboarding, comment above and uncomment below:
-      // Get.offAllNamed(AppRoutes.onboarding);
       // To test home, comment above and uncomment below:
       // Get.offAllNamed(AppRoutes.home);
+      // To test onboarding, comment above and uncomment below:
+      // Get.offAllNamed(AppRoutes.onboarding);
     });
     return Scaffold(
       backgroundColor: const Color(0xFF2F2F2F),
@@ -38,7 +39,7 @@ class SplashScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(32),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFCCE5E3).withOpacity(0.3),
+                      color: const Color(0xFFCCE5E3).withValues(alpha: 0.3),
                       blurRadius: 30,
                       spreadRadius: 5,
                     ),
@@ -65,7 +66,7 @@ class SplashScreen extends StatelessWidget {
                 'Organize & Collect Effortlessly',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white.withValues(alpha: 0.7),
                   letterSpacing: 0.3,
                 ),
               ),
