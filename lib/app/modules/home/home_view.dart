@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/home/home_controller.dart';
 
@@ -14,14 +15,27 @@ class HomeScreen extends GetView<HomeController> {
       backgroundColor: isDark
           ? const Color(0xFF1A1C1E)
           : const Color(0xFFF5F5F5),
+      appBar: AppBar(
+        backgroundColor: isDark
+            ? const Color(0xFF2F2F2F)
+            : const Color(0xFF2F2F2F),
+        elevation: 0,
+        toolbarHeight:
+            0, // Hide the default toolbar, just use the status bar color
+        systemOverlayStyle: isDark
+            ? SystemUiOverlayStyle.light.copyWith(
+                statusBarColor: const Color(0xFF2F2F2F),
+              )
+            : SystemUiOverlayStyle.dark.copyWith(
+                statusBarColor: const Color(0xFF2F2F2F),
+              ),
+      ),
       body: Column(
         children: [
-          // Header Section
+          // Custom AppBar Content (below status bar)
           Container(
             decoration: BoxDecoration(
-              color: isDark
-                  ? const Color(0xFF2F2F2F)
-                  : const Color(0xFF2F2F2F),
+              color: isDark ? const Color(0xFF2F2F2F) : const Color(0xFF2F2F2F),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(32),
                 bottomRight: Radius.circular(32),
@@ -138,7 +152,7 @@ class HomeScreen extends GetView<HomeController> {
               ],
             ),
           ),
-      
+          const SizedBox(height: 16),
           // Content Section
           Expanded(
             child: SingleChildScrollView(
@@ -170,9 +184,7 @@ class HomeScreen extends GetView<HomeController> {
                       ),
                     ],
                   ),
-      
                   const SizedBox(height: 32),
-      
                   // Upcoming Events Header
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,9 +226,9 @@ class HomeScreen extends GetView<HomeController> {
                       ),
                     ],
                   ),
-      
+
                   const SizedBox(height: 16),
-      
+
                   // Event Cards
                   Obx(
                     () => ListView.builder(
