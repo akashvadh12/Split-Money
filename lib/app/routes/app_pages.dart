@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/auth/auth_binding.dart';
-import 'package:split_money/app/modules/auth/auth_view.dart';
+import 'package:split_money/app/modules/auth/auth_login_view.dart';
+import 'package:split_money/app/modules/auth/auth_register_view.dart';
 import 'package:split_money/app/modules/home/home_binding.dart';
 import 'package:split_money/app/modules/home/home_view.dart';
 import 'package:split_money/app/modules/navigation/bindings/bottom_nav_binding.dart';
 import 'package:split_money/app/modules/navigation/views/main_screen.dart';
-import 'package:split_money/main.dart';
 
 import 'app_routes.dart';
 
@@ -15,6 +15,11 @@ class AppPages {
       name: AppRoutes.login,
       page: () => const LoginScreen(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.signup,
+      page: () => const SignupScreen(),
+      binding: SignupBinding(),
     ),
     // GetPage(
 

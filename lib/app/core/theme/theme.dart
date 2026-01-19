@@ -24,7 +24,7 @@ ThemeData buildLightTheme() {
     secondary: secondary,
     onSecondary: onSecondary,
     surface: surface,
-    surfaceVariant: surfaceVariant,
+    surfaceContainerHighest: surfaceVariant,
     outline: outline,
     error: error,
   );
@@ -57,7 +57,7 @@ ThemeData buildLightTheme() {
     cardTheme: CardThemeData(
       color: surface,
       elevation: 1,
-      shadowColor: Colors.black.withOpacity(0.04),
+      shadowColor: Colors.black.withValues(alpha: 0.04),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
     ),
 
@@ -142,6 +142,8 @@ ThemeData buildDarkTheme() {
 
   const success = Color(0xFF81C784);
 
+  const error = Color(0xFFB00020);
+
   final colorScheme = const ColorScheme.dark(
     primary: primary,
     onPrimary: onPrimary,
@@ -149,10 +151,10 @@ ThemeData buildDarkTheme() {
     onPrimaryContainer: onPrimaryContainer,
     secondary: secondary,
     tertiary: tertiary,
-    background: background,
     surface: surface,
     onSurface: primary,
     outline: outline,
+    error: error,
   );
 
   return ThemeData(
@@ -231,4 +233,9 @@ class StatusColors extends ThemeExtension<StatusColors> {
     if (other is! StatusColors) return this;
     return StatusColors(success: Color.lerp(success, other.success, t)!);
   }
+}
+
+extension StatusColorsThemeData on ThemeData {
+  Color get success =>
+      extension<StatusColors>()?.success ?? const Color(0xFF4CAF50);
 }
