@@ -9,7 +9,7 @@ class LoginScreen extends GetView<LoginController> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -66,12 +66,14 @@ class LoginScreen extends GetView<LoginController> {
                   ],
                 ),
               ),
-              
+
               // Light form section
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1A1C1E) : const Color(0xFFEEDEF6),
+                  color: isDark
+                      ? const Color(0xFF1A1C1E)
+                      : const Color(0xFFF7F9F8),
                 ),
                 padding: const EdgeInsets.all(32),
                 child: Column(
@@ -83,98 +85,123 @@ class LoginScreen extends GetView<LoginController> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                        color: isDark
+                            ? const Color(0xFF8A9291)
+                            : const Color(0xFF707978),
                         letterSpacing: 0.5,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Obx(() => TextField(
-                      controller: controller.emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: 'e.g. hello@example.com',
-                        hintStyle: TextStyle(
-                          color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                    Obx(
+                      () => TextField(
+                        controller: controller.emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your Email',
+                          hintStyle: TextStyle(
+                            color: isDark
+                                ? const Color(0xFF8A9291)
+                                : const Color(0xFF707978),
+                          ),
+                          suffixIcon: Icon(
+                            Icons.alternate_email,
+                            color: isDark
+                                ? const Color(0xFF8A9291)
+                                : const Color(0xFF707978),
+                          ),
+                          filled: true,
+                          fillColor: isDark
+                              ? const Color(0xFF222427)
+                              : theme.colorScheme.primary,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide.none,
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2,
+                            ),
+                          ),
+                          errorText: controller.emailError.value.isEmpty
+                              ? null
+                              : controller.emailError.value,
+                          contentPadding: const EdgeInsets.all(20),
                         ),
-                        suffixIcon: Icon(
-                          Icons.alternate_email,
-                          color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
-                        ),
-                        filled: true,
-                        fillColor: isDark ? const Color(0xFF222427) : Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.red, width: 2),
-                        ),
-                        errorText: controller.emailError.value.isEmpty 
-                            ? null 
-                            : controller.emailError.value,
-                        contentPadding: const EdgeInsets.all(20),
                       ),
-                    )),
-                    
+                    ),
+
                     const SizedBox(height: 24),
-                    
+
                     // Password field
                     Text(
                       'PASSWORD',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                        color: isDark
+                            ? const Color(0xFF8A9291)
+                            : const Color(0xFF707978),
                         letterSpacing: 0.5,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Obx(() => TextField(
-                      controller: controller.passwordController,
-                      obscureText: controller.obscurePassword.value,
-                      decoration: InputDecoration(
-                        hintText: '••••••••',
-                        hintStyle: const TextStyle(
-                          fontSize: 20,
-                          letterSpacing: 2,
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            controller.obscurePassword.value 
-                                ? Icons.lock_outline 
-                                : Icons.lock_open_outlined,
-                            color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                    Obx(
+                      () => TextField(
+                        controller: controller.passwordController,
+                        obscureText: controller.obscurePassword.value,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your Password',
+                          hintStyle: TextStyle(
+                            color: isDark
+                                ? const Color(0xFF8A9291)
+                                : const Color(0xFF707978),
                           ),
-                          onPressed: controller.togglePasswordVisibility,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              controller.obscurePassword.value
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                              color: isDark
+                                  ? const Color.fromARGB(255, 138, 146, 145)
+                                  : const Color(0xFF707978),
+                            ),
+                            onPressed: controller.togglePasswordVisibility,
+                          ),
+                          filled: true,
+                          fillColor: isDark
+                              ? const Color(0xFF222427)
+                              : Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide.none,
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(
+                              color: Colors.red,
+                              width: 2,
+                            ),
+                          ),
+                          errorText: controller.passwordError.value.isEmpty
+                              ? null
+                              : controller.passwordError.value,
+                          contentPadding: const EdgeInsets.all(20),
                         ),
-                        filled: true,
-                        fillColor: isDark ? const Color(0xFF222427) : Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.red, width: 2),
-                        ),
-                        errorText: controller.passwordError.value.isEmpty 
-                            ? null 
-                            : controller.passwordError.value,
-                        contentPadding: const EdgeInsets.all(20),
                       ),
-                    )),
-                    
+                    ),
+
                     const SizedBox(height: 16),
-                    
+
                     // Forgot password
                     Align(
                       alignment: Alignment.centerRight,
@@ -183,55 +210,63 @@ class LoginScreen extends GetView<LoginController> {
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(
-                            color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                            color: isDark
+                                ? const Color(0xFF8A9291)
+                                : const Color(0xFF707978),
                             fontSize: 14,
                           ),
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Login button
-                    Obx(() => ElevatedButton(
-                      onPressed: controller.isLoading.value ? null : controller.login,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2F2F2F),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                    Obx(
+                      () => ElevatedButton(
+                        onPressed: controller.isLoading.value
+                            ? null
+                            : controller.login,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF2F2F2F),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 18),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                          disabledBackgroundColor: const Color(0xFF707978),
                         ),
-                        elevation: 0,
-                        disabledBackgroundColor: const Color(0xFF707978),
-                      ),
-                      child: controller.isLoading.value
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            )
-                          : const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Login',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                        child: controller.isLoading.value
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
                                   ),
                                 ),
-                                SizedBox(width: 8),
-                                Icon(Icons.arrow_forward, size: 20),
-                              ],
-                            ),
-                    )),
-                    
+                              )
+                            : const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Login',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Icon(Icons.arrow_forward, size: 20),
+                                ],
+                              ),
+                      ),
+                    ),
+
                     const SizedBox(height: 32),
-                    
+
                     // Create account
                     Center(
                       child: Column(
@@ -239,7 +274,9 @@ class LoginScreen extends GetView<LoginController> {
                           Text(
                             'New around here?',
                             style: TextStyle(
-                              color: isDark ? const Color(0xFF8A9291) : const Color(0xFF707978),
+                              color: isDark
+                                  ? const Color(0xFF8A9291)
+                                  : const Color(0xFF707978),
                               fontSize: 14,
                             ),
                           ),
@@ -249,7 +286,9 @@ class LoginScreen extends GetView<LoginController> {
                             child: Text(
                               'Create Account',
                               style: TextStyle(
-                                color: isDark ? const Color(0xFFE2E2E2) : const Color(0xFF2F2F2F),
+                                color: isDark
+                                    ? const Color(0xFFE2E2E2)
+                                    : const Color(0xFF2F2F2F),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -258,7 +297,7 @@ class LoginScreen extends GetView<LoginController> {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 40),
                   ],
                 ),

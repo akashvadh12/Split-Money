@@ -10,7 +10,7 @@ ThemeData buildLightTheme() {
   const onSecondary = Color(0xFF281800);
 
   const surface = Color(0xFFFFFFFF);
-  const surfaceVariant = Color(0xFFEEDEF6);
+  const surfaceVariant = Color(0xFFF7F9F8);
   const outline = Color(0xFF707978);
 
   const success = Color(0xFF4CAF50);
