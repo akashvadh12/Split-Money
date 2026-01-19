@@ -186,6 +186,8 @@ class LoginController extends GetxController {
             ? 'Check your email for the OTP'
             : 'Check your mobile for the OTP',
         snackPosition: SnackPosition.TOP,
+        backgroundColor: Theme.of(Get.context!).success.withValues(alpha: 0.4),
+        colorText: Colors.white,
         margin: const EdgeInsets.all(16),
       );
     });
