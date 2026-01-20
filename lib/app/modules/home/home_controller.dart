@@ -1,6 +1,3 @@
-// ==================== HOME CONTROLLER ====================
-// File: lib/controllers/home_controller.dart
-
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/auth/auth_service.dart';
 

@@ -6,6 +6,7 @@ import 'package:split_money/app/modules/navigation/widgets/app_drawer.dart';
 import 'package:split_money/app/modules/navigation/controllers/bottom_nav_controller.dart';
 import 'package:split_money/app/modules/navigation/widgets/custom_bottom_nav_bar.dart';
 import 'package:split_money/app/modules/Settings/settings_view.dart';
+import 'package:split_money/app/modules/wallet/wallet.dart';
 
 class MainScreen extends GetView<BottomNavController> {
   const MainScreen({super.key});
@@ -13,7 +14,7 @@ class MainScreen extends GetView<BottomNavController> {
   static final List<Widget> _screens = [
     HomeScreen(),
     CreateEventScreen(),
-    // StatsScreen(),
+    WalletEmptyScreen(),
     SettingsView(),
   ];
 
