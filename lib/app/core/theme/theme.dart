@@ -9,6 +9,9 @@ ThemeData buildLightTheme() {
   const secondary = Color(0xFFFEE1B6);
   const onSecondary = Color(0xFF281800);
 
+  const tertiary = Color(0xFFB9C6D7);
+  const onTertiary = Color(0xFF24324A);
+
   const surface = Color(0xFFFFFFFF);
   const surfaceVariant = Color(0xFFF7F9F8);
   const outline = Color(0xFF707978);
@@ -22,6 +25,8 @@ ThemeData buildLightTheme() {
     primaryContainer: primaryContainer,
     onPrimaryContainer: onPrimaryContainer,
     secondary: secondary,
+    tertiary: tertiary,
+    onTertiary: onTertiary,
     onSecondary: onSecondary,
     surface: surface,
     surfaceContainerHighest: surfaceVariant,

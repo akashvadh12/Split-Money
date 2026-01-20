@@ -5,9 +5,11 @@ import 'package:split_money/app/modules/auth/auth_register_view.dart';
 import 'package:split_money/app/modules/home/home_binding.dart';
 import 'package:split_money/app/modules/home/home_view.dart';
 import 'package:split_money/app/modules/navigation/bindings/bottom_nav_binding.dart';
-import 'package:split_money/app/modules/navigation/views/main_screen.dart'
+import 'package:split_money/app/modules/navigation/views/main_controller.dart'
     show MainScreen;
 import 'package:split_money/app/modules/splash/splash_binding.dart';
+
+import 'package:split_money/app/modules/profile/edit profile/edit_profile.dart';
 import 'package:split_money/app/modules/splash/splash_screen.dart';
 
 import 'package:split_money/app/modules/Intro_screens/views/onboarding_view.dart';
@@ -89,6 +91,13 @@ class AppPages {
       name: AppRoutes.home,
       page: () => const HomeScreen(),
       binding: HomeBinding(),
+    ),
+    // Edit Profile
+    GetPage(
+      name: AppRoutes.editProfile,
+      page: () => const EditProfileView(),
+      binding:
+          BottomNavBinding(), // Use ProfileBinding if you want a separate controller instance
     ),
     // Add more routes as needed (profile, editProfile, etc.)
   ];
