@@ -179,18 +179,29 @@ class CreateEventScreen extends StatelessWidget {
                           final isSelected =
                               controller.selectedCategory.value == category;
 
+                          // Increase size and shadow if selected
+                          final double size = isSelected ? 90 : 80;
+                          final double iconSize = isSelected ? 38 : 32;
+                          final double elevation = isSelected ? 24 : 0;
+
                           return Expanded(
                             child: GestureDetector(
                               onTap: () => controller.selectCategory(category),
-                              child: Container(
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 180),
+                                curve: Curves.easeOut,
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: 6,
                                 ),
                                 child: Column(
                                   children: [
-                                    Container(
-                                      width: 80,
-                                      height: 80,
+                                    AnimatedContainer(
+                                      duration: const Duration(
+                                        milliseconds: 180,
+                                      ),
+                                      curve: Curves.easeOut,
+                                      width: size,
+                                      height: size,
                                       decoration: BoxDecoration(
                                         color: category.isOutlined
                                             ? Colors.transparent
@@ -209,16 +220,17 @@ class CreateEventScreen extends StatelessWidget {
                                             ? [
                                                 BoxShadow(
                                                   color: category.color
-                                                      .withValues(alpha: 0.3),
-                                                  blurRadius: 12,
-                                                  offset: const Offset(0, 4),
+                                                      .withOpacity(0.4),
+                                                  blurRadius: 18,
+                                                  spreadRadius: 2,
+                                                  offset: const Offset(0, 8),
                                                 ),
                                               ]
                                             : null,
                                       ),
                                       child: Icon(
                                         category.icon,
-                                        size: 32,
+                                        size: iconSize,
                                         color: category.isOutlined
                                             ? Theme.of(
                                                 context,

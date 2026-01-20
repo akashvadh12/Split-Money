@@ -89,7 +89,7 @@ class CustomBottomNavBar extends StatelessWidget {
         /// Categories
         BottomBarItem(
           inActiveItem: Icon(
-            Icons.category_outlined,
+            Icons.event,
             color: Theme.of(context).colorScheme.outline,
           ),
           activeItem: Icon(Icons.event, color: Colors.white),
@@ -99,11 +99,11 @@ class CustomBottomNavBar extends StatelessWidget {
         /// Orders
         BottomBarItem(
           inActiveItem: Icon(
-            Icons.receipt_long_outlined,
+            Icons.wallet_outlined,
             color: Theme.of(context).colorScheme.outline,
           ),
-          activeItem: Icon(Icons.receipt_long, color: Colors.white),
-          itemLabel: 'Orders',
+          activeItem: Icon(Icons.wallet, color: Colors.white),
+          itemLabel: 'Wallet',
         ),
 
         /// Profile
