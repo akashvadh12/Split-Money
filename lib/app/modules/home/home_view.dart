@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/home/home_controller.dart';
+import 'package:split_money/app/modules/navigation/controllers/bottom_nav_controller.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -47,6 +48,24 @@ class HomeScreen extends GetView<HomeController> {
                 // Top Bar
                 Row(
                   children: [
+                    // Menu / Drawer Button
+                    GestureDetector(
+                      onTap: () => Get.find<BottomNavController>().openDrawer(),
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        margin: const EdgeInsets.only(right: 12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF404040),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.menu,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                      ),
+                    ),
                     // Profile Avatar
                     Container(
                       width: 56,
@@ -152,7 +171,7 @@ class HomeScreen extends GetView<HomeController> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          // const SizedBox(height: 16),
           // Content Section
           Expanded(
             child: SingleChildScrollView(
