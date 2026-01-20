@@ -41,7 +41,7 @@ class HomeController extends GetxController {
 
   String get userName {
     final email = _authService.currentUserEmail.value ?? '';
-    if (email.isEmpty) return 'User';
+    if (email.isEmpty) return 'Dewashish';
     return 'Sarah Jenkins'; // Mock user name
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/home/home_controller.dart';
 import 'package:split_money/app/modules/navigation/controllers/bottom_nav_controller.dart';
+import 'package:split_money/app/modules/navigation/widgets/app_drawer.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -13,6 +14,7 @@ class HomeScreen extends GetView<HomeController> {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
+      drawer: const AppDrawer(),
       backgroundColor: isDark
           ? const Color(0xFF1A1C1E)
           : const Color(0xFFF5F5F5),
@@ -42,36 +44,23 @@ class HomeScreen extends GetView<HomeController> {
                 // Top Bar
                 Row(
                   children: [
-                    // Menu / Drawer Button
-                    GestureDetector(
-                      onTap: () => Get.find<BottomNavController>().openDrawer(),
-                      child: Container(
-                        width: 44,
-                        height: 44,
-                        margin: const EdgeInsets.only(right: 12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF404040),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                          size: 22,
-                        ),
-                      ),
-                    ),
                     // Profile Avatar
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: const Color(0xFFCCE5E3),
-                      ),
-                      child: const Icon(
-                        Icons.person,
-                        color: Color(0xFF2F2F2F),
-                        size: 32,
+                    GestureDetector(
+                      onTap: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      child: Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0xFFCCE5E3),
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            "https://media.licdn.com/dms/image/v2/D4D03AQHLVGIVaL9i3A/profile-displayphoto-scale_200_200/B4DZlENDaYJYAc-/0/1757785898710?e=2147483647&v=beta&t=69OvRM_VA0P8Hb020ubfCOxTtJuKUUCNCeP5pYLBaY4",
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -79,25 +68,45 @@ class HomeScreen extends GetView<HomeController> {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'WELCOME BACK',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withOpacity(0.7),
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Obx(
-                            () => Text(
-                              controller.userName,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                          Row(
+                            children: [
+                              Text(
+                                'WELCOME BACK',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white.withOpacity(0.7),
+                                ),
                               ),
+                              const SizedBox(width: 8),
+                              Container(
+                                width: .8,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  color: theme.dividerColor,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Obx(
+                                () => Text(
+                                  controller.userName,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Text(
+                            'Dashboard',
+                            style: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -123,50 +132,9 @@ class HomeScreen extends GetView<HomeController> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    // Search Icon
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF404040),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.search,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
                   ],
                 ),
-                const SizedBox(height: 32),
                 // Dashboard Title
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Dashboard',
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF404040),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        Icons.more_horiz,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
