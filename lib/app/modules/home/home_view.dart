@@ -17,19 +17,13 @@ class HomeScreen extends GetView<HomeController> {
           ? const Color(0xFF1A1C1E)
           : const Color(0xFFF5F5F5),
       appBar: AppBar(
-        backgroundColor: isDark
-            ? const Color(0xFF2F2F2F)
-            : const Color(0xFF2F2F2F),
+        backgroundColor: const Color(0xFF2F2F2F),
         elevation: 0,
         toolbarHeight:
             0, // Hide the default toolbar, just use the status bar color
-        systemOverlayStyle: isDark
-            ? SystemUiOverlayStyle.light.copyWith(
-                statusBarColor: const Color(0xFF2F2F2F),
-              )
-            : SystemUiOverlayStyle.dark.copyWith(
-                statusBarColor: const Color(0xFF2F2F2F),
-              ),
+        systemOverlayStyle: SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: const Color(0xFF2F2F2F),
+        ),
       ),
       body: Column(
         children: [
@@ -424,60 +418,62 @@ class HomeScreen extends GetView<HomeController> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 // Amount
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          '\$${event.collected.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: isDark
-                                ? Colors.white
-                                : const Color(0xFF2F2F2F),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          child: Text(
-                            'of \$${event.target.toStringAsFixed(0)}',
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            '\$${event.collected.toStringAsFixed(2)}',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
                               color: isDark
-                                  ? const Color(0xFF8A9291)
-                                  : const Color(0xFF707978),
+                                  ? Colors.white
+                                  : const Color(0xFF2F2F2F),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Text(
+                              'of \$${event.target.toStringAsFixed(0)}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: isDark
+                                    ? const Color(0xFF8A9291)
+                                    : const Color(0xFF707978),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      // Progress Bar
+                      Container(
+                        width: 200,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? const Color(0xFF404040)
+                              : const Color(0xFFE0E0E0),
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: FractionallySizedBox(
+                          alignment: Alignment.centerLeft,
+                          widthFactor: event.progress,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: progressColor,
+                              borderRadius: BorderRadius.circular(3),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    // Progress Bar
-                    Container(
-                      width: 200,
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xFF404040)
-                            : const Color(0xFFE0E0E0),
-                        borderRadius: BorderRadius.circular(3),
                       ),
-                      child: FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: event.progress,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: progressColor,
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 // Avatars
                 Row(

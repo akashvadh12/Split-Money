@@ -9,14 +9,20 @@ class AppDrawer extends StatelessWidget {
 
     return Material(
       color: isDark ? const Color(0xFF1E1F20) : const Color(0xFFF2E8F6),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
+      child: SingleChildScrollView(
+        child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Drawer Header  
               Container(
+                
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.only(
+                  top: 55,
+                  left: 18,
+                  right: 18,
+                  bottom: 24,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF2F2F2F),
                   borderRadius: const BorderRadius.only(
@@ -217,7 +223,7 @@ class AppDrawer extends StatelessWidget {
             ],
           ),
         ),
-      ),
+    
     );
   }
 
