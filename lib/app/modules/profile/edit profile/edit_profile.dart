@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../profile_controller.dart';
@@ -8,244 +7,205 @@ class EditProfileView extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    final isdark = Theme.of(context).brightness == Brightness.dark;
-    final Color bgColor = !isdark
-        ? Theme.of(context).colorScheme.primary
-        : Theme.of(context).colorScheme.primary.withAlpha(50);
-    final Color fieldColor = isdark ? Colors.white10 : Colors.white;
-    final Color iconBgColor = isdark ? Colors.white10 : const Color(0xFFF9F6FF);
-    final Color textColor = isdark ? Colors.white : Colors.black87;
-    final Color labelColor = isdark ? Colors.white60 : Colors.black54;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final bgColor = theme.colorScheme.surface;
+    final cardColor = theme.colorScheme.surfaceContainerHighest;
+    final textColor = theme.colorScheme.onSurface;
+    final hintColor = theme.colorScheme.onSurfaceVariant;
 
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: bgColor,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: isdark ? Colors.white : Colors.black,
-          ),
-          onPressed: () => Get.back(),
-        ),
+        surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Edit Profile',
-          style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.more_horiz,
-              color: isdark ? Colors.white : Colors.black,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 16),
-              // Profile image with edit icon
-              Center(
-                child: Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    CircleAvatar(
-                      radius: 56,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 52,
+        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+        child: Column(
+          children: [
+            // ================= PROFILE AVATAR =================
+            Center(
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  CircleAvatar(
+                    radius: 58,
+                    backgroundColor: theme.colorScheme.primaryContainer,
+                    child: Obx(
+                      () => CircleAvatar(
+                        radius: 54,
                         backgroundImage: NetworkImage(
                           controller.profileImage.value,
                         ),
                       ),
                     ),
-                    Positioned(
-                      bottom: 4,
-                      right: 4,
-                      child: GestureDetector(
-                        onTap: controller.onEditProfileImage,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                          padding: const EdgeInsets.all(6),
-                          child: const Icon(
-                            Icons.camera_alt,
-                            color: Colors.white,
-                            size: 20,
-                          ),
+                  ),
+                  Material(
+                    color: isDark
+                        ? theme.colorScheme.primary.withValues(alpha: 0.8)
+                        : theme.colorScheme.primary.withValues(alpha: 0.8),
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: controller.onEditProfileImage,
+                      child: const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Icon(
+                          Icons.camera_alt_rounded,
+                          color: Colors.white,
+                          size: 20,
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'FintechID: @${controller.fintechId.value}',
-                style: TextStyle(
-                  color: labelColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 24),
-              // Full Name
-              _EditProfileField(
-                label: 'FULL NAME',
-                icon: Icons.person,
-                controller: controller.nameController,
-                hintText: 'Full Name',
-                fillColor: fieldColor,
-                iconBgColor: iconBgColor,
-                textColor: textColor,
-                labelColor: labelColor,
-              ),
-              // Email
-              _EditProfileField(
-                label: 'EMAIL ADDRESS',
-                icon: Icons.alternate_email,
-                controller: controller.emailController,
-                hintText: 'Email Address',
-                fillColor: fieldColor,
-                iconBgColor: iconBgColor,
-                textColor: textColor,
-                labelColor: labelColor,
-              ),
-              // Phone
-              _EditProfileField(
-                label: 'PHONE NUMBER',
-                icon: Icons.phone,
-                controller: controller.phoneController,
-                hintText: 'Phone Number',
-                fillColor: fieldColor,
-                iconBgColor: iconBgColor,
-                textColor: textColor,
-                labelColor: labelColor,
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: controller.onSaveProfile,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: !isdark
-                        ? Colors.black54
-                        : Theme.of(context).colorScheme.primary.withAlpha(50),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 18),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    elevation: 2,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Save Changes',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward, size: 20),
-                    ],
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 32),
+
+            // ================= FORM CARD =================
+            Container(
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 28),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.2)
+                    : Colors.black87,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Column(
+                children: [
+                  _ProfileField(
+                    label: 'Full Name',
+                    icon: Icons.person_outline_rounded,
+                    controller: controller.nameController,
+                    hintText: 'Enter your name',
+                    textColor: textColor,
+                    hintColor: hintColor,
+                  ),
+                  const SizedBox(height: 18),
+                  _ProfileField(
+                    label: 'Email Address',
+                    icon: Icons.alternate_email_rounded,
+                    controller: controller.emailController,
+                    hintText: 'Enter your email',
+                    keyboardType: TextInputType.emailAddress,
+                    textColor: textColor,
+                    hintColor: hintColor,
+                  ),
+                  const SizedBox(height: 18),
+                  _ProfileField(
+                    label: 'Phone Number',
+                    icon: Icons.phone_rounded,
+                    controller: controller.phoneController,
+                    hintText: 'Enter your phone',
+                    keyboardType: TextInputType.phone,
+                    textColor: textColor,
+                    hintColor: hintColor,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 28),
+
+            // ================= SAVE BUTTON =================
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: controller.onSaveProfile,
+                icon: const Icon(Icons.check_rounded),
+                label: const Text(
+                  'Save Changes',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _EditProfileField extends StatelessWidget {
+// =======================================================================
+// FIELD WIDGET
+// =======================================================================
+
+class _ProfileField extends StatelessWidget {
   final String label;
   final IconData icon;
   final TextEditingController controller;
   final String hintText;
-  final Color fillColor;
-  final Color iconBgColor;
+  final TextInputType? keyboardType;
   final Color textColor;
-  final Color labelColor;
+  final Color hintColor;
 
-  const _EditProfileField({
+  const _ProfileField({
     required this.label,
     required this.icon,
     required this.controller,
     required this.hintText,
-    required this.fillColor,
-    required this.iconBgColor,
     required this.textColor,
-    required this.labelColor,
+    required this.hintColor,
+    this.keyboardType,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: labelColor,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1,
-            ),
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.labelMedium?.copyWith(
+            color: Brightness.dark == theme.brightness
+                ? Colors.white70
+                : Colors.grey.shade100,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 8),
-          Container(
-            decoration: BoxDecoration(
-              color: fillColor,
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          style: theme.textTheme.bodyLarge?.copyWith(color: textColor),
+          decoration: InputDecoration(
+            hintText: hintText,
+            prefixIcon: Icon(icon),
+            filled: true,
+            fillColor: Brightness.dark == theme.brightness
+                ? Colors.black45
+                : Colors.white70,
+            border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
             ),
-            child: Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 8,
-                  ),
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: iconBgColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(icon, color: textColor, size: 22),
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    style: TextStyle(
-                      color: textColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: hintText,
-                      hintStyle: TextStyle(color: labelColor.withOpacity(0.7)),
-                    ),
-                  ),
-                ),
-              ],
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
