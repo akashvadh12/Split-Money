@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:split_money/app/modules/create_events/create_events_controller.dart';
+import 'package:split_money/app/modules/create_events/create_event_flow_controller.dart';
 
 // Main Screen
 class CreateEventScreen extends StatelessWidget {
@@ -8,7 +8,7 @@ class CreateEventScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CreateEventController());
+    final controller = Get.find<CreateEventFlowController>();
 
     return Scaffold(
       body: SafeArea(
@@ -25,22 +25,27 @@ class CreateEventScreen extends StatelessWidget {
                     onPressed: () => Get.back(),
                   ),
                   // Step Indicator
-                  Row(
-                    children: List.generate(3, (index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: index == 0 ? 32 : 12,
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: index == 0
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(
-                                  context,
-                                ).colorScheme.outline.withValues(alpha: 0.3),
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                      );
-                    }),
+                  Obx(
+                    () => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(3, (index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: controller.currentStep.value == index + 1
+                              ? 32
+                              : 12,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: controller.currentStep.value > index
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.outline.withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                   IconButton(
                     icon: Icon(
@@ -301,12 +306,14 @@ class CreateEventScreen extends StatelessWidget {
             // Continue Button
             Container(
               padding: const EdgeInsets.all(24),
-              child: GetBuilder<CreateEventController>(
-                builder: (ctrl) => SizedBox(
+              child: Obx(() {
+                final canContinue = controller.canContinueStep1;
+
+                return SizedBox(
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: ctrl.canContinue ? ctrl.onContinue : null,
+                    onPressed: canContinue ? controller.goToStep2 : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       disabledBackgroundColor: Theme.of(
@@ -324,7 +331,7 @@ class CreateEventScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: ctrl.canContinue
+                            color: canContinue
                                 ? Colors.white
                                 : Theme.of(context).colorScheme.outline,
                           ),
@@ -332,15 +339,15 @@ class CreateEventScreen extends StatelessWidget {
                         const SizedBox(width: 8),
                         Icon(
                           Icons.arrow_forward,
-                          color: ctrl.canContinue
+                          color: canContinue
                               ? Colors.white
                               : Theme.of(context).colorScheme.outline,
                         ),
                       ],
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ],
         ),
@@ -348,6 +355,3 @@ class CreateEventScreen extends StatelessWidget {
     );
   }
 }
-
-// Extension for success color from your theme
-extension ThemeExtensions on ThemeData {}

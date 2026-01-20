@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:split_money/app/modules/create_events/when&where/when&where_controller.dart';
+import 'package:split_money/app/modules/create_events/create_event_flow_controller.dart';
 
 class WhenWhereScreen extends StatelessWidget {
   const WhenWhereScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(WhenWhereController());
+    final controller = Get.find<CreateEventFlowController>();
 
     return Scaffold(
       body: SafeArea(
@@ -25,20 +25,27 @@ class WhenWhereScreen extends StatelessWidget {
                     onPressed: () => Get.back(),
                   ),
                   // Step Indicator
-                  Row(
-                    children: List.generate(3, (index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: index == 0 ? 32 : 12,
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: index == 0
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                      );
-                    }),
+                  Obx(
+                    () => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(3, (index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: controller.currentStep.value == index + 1
+                              ? 32
+                              : 12,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: controller.currentStep.value > index
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.outline.withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                   Container(
                     width: 40,
@@ -66,11 +73,12 @@ class WhenWhereScreen extends StatelessWidget {
                     // Title
                     Text(
                       'When & Where',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontSize: 36,
-                        fontWeight: FontWeight.w800,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
+                            fontSize: 36,
+                            fontWeight: FontWeight.w800,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -114,74 +122,100 @@ class WhenWhereScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 12),
-                          Obx(() => Text(
-                            DateFormat('MMMM d, EEE').format(controller.selectedDate.value),
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w800,
-                              color: Theme.of(context).colorScheme.primary,
+                          Obx(
+                            () => Text(
+                              DateFormat(
+                                'MMMM d, EEE',
+                              ).format(controller.selectedDate.value),
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.w800,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                             ),
-                          )),
+                          ),
                           const SizedBox(height: 24),
                           // Week Days
-                          Obx(() => Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: controller.weekDates.map((date) {
-                              final isSelected = DateFormat('yyyy-MM-dd').format(date) ==
-                                  DateFormat('yyyy-MM-dd').format(controller.selectedDate.value);
-                              final dayName = DateFormat('EEE').format(date).toUpperCase();
-                              final dayNumber = DateFormat('d').format(date);
+                          Obx(
+                            () => Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: controller.weekDates.map((date) {
+                                final isSelected =
+                                    DateFormat('yyyy-MM-dd').format(date) ==
+                                    DateFormat(
+                                      'yyyy-MM-dd',
+                                    ).format(controller.selectedDate.value);
+                                final dayName = DateFormat(
+                                  'EEE',
+                                ).format(date).toUpperCase();
+                                final dayNumber = DateFormat('d').format(date);
 
-                              return GestureDetector(
-                                onTap: () => controller.selectDate(date),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      dayName,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: isSelected
-                                            ? Theme.of(context).colorScheme.primary
-                                            : Theme.of(context).colorScheme.outline,
+                                return GestureDetector(
+                                  onTap: () => controller.selectDate(date),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        dayName,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: isSelected
+                                              ? Theme.of(
+                                                  context,
+                                                ).colorScheme.primary
+                                              : Theme.of(
+                                                  context,
+                                                ).colorScheme.outline,
+                                        ),
                                       ),
-                                    ),
-                                    if (isSelected)
+                                      if (isSelected)
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            top: 4,
+                                            bottom: 4,
+                                          ),
+                                          height: 2,
+                                          width: 20,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                        )
+                                      else
+                                        const SizedBox(height: 10),
                                       Container(
-                                        margin: const EdgeInsets.only(top: 4, bottom: 4),
-                                        height: 2,
-                                        width: 20,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      )
-                                    else
-                                      const SizedBox(height: 10),
-                                    Container(
-                                      width: 56,
-                                      height: 56,
-                                      decoration: BoxDecoration(
-                                        color: isSelected
-                                            ? Theme.of(context).colorScheme.primary
-                                            : Colors.white,
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          dayNumber,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w700,
-                                            color: isSelected
-                                                ? Colors.white
-                                                : Theme.of(context).colorScheme.primary,
+                                        width: 56,
+                                        height: 56,
+                                        decoration: BoxDecoration(
+                                          color: isSelected
+                                              ? Theme.of(
+                                                  context,
+                                                ).colorScheme.primary
+                                              : Colors.white,
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            dayNumber,
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w700,
+                                              color: isSelected
+                                                  ? Colors.white
+                                                  : Theme.of(
+                                                      context,
+                                                    ).colorScheme.primary,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          )),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -198,7 +232,9 @@ class WhenWhereScreen extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(24),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFFEE1B6).withValues(alpha: 0.5),
+                                color: const Color(
+                                  0xFFFEE1B6,
+                                ).withValues(alpha: 0.5),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                               child: Column(
@@ -210,18 +246,26 @@ class WhenWhereScreen extends StatelessWidget {
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                       letterSpacing: 1.2,
-                                      color: Theme.of(context).colorScheme.outline,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.outline,
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  Obx(() => Text(
-                                    controller.startTime.value.format(context),
-                                    style: TextStyle(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w800,
-                                      color: Theme.of(context).colorScheme.primary,
+                                  Obx(
+                                    () => Text(
+                                      controller.startTime.value.format(
+                                        context,
+                                      ),
+                                      style: TextStyle(
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.w800,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
                                     ),
-                                  )),
+                                  ),
                                 ],
                               ),
                             ),
@@ -235,7 +279,9 @@ class WhenWhereScreen extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(24),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFCCE5E3).withValues(alpha: 0.5),
+                                color: const Color(
+                                  0xFFCCE5E3,
+                                ).withValues(alpha: 0.5),
                                 borderRadius: BorderRadius.circular(24),
                               ),
                               child: Column(
@@ -247,18 +293,24 @@ class WhenWhereScreen extends StatelessWidget {
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                       letterSpacing: 1.2,
-                                      color: Theme.of(context).colorScheme.outline,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.outline,
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  Obx(() => Text(
-                                    controller.endTime.value.format(context),
-                                    style: TextStyle(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w800,
-                                      color: Theme.of(context).colorScheme.primary,
+                                  Obx(
+                                    () => Text(
+                                      controller.endTime.value.format(context),
+                                      style: TextStyle(
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.w800,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
                                     ),
-                                  )),
+                                  ),
                                 ],
                               ),
                             ),
@@ -340,7 +392,7 @@ class WhenWhereScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: controller.onNextStep,
+                  onPressed: controller.goToStep3,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     shape: RoundedRectangleBorder(
@@ -372,10 +424,7 @@ class WhenWhereScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                      ),
+                      Icon(Icons.arrow_forward, color: Colors.white),
                     ],
                   ),
                 ),
@@ -386,9 +435,4 @@ class WhenWhereScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-// Extension for success color
-extension ThemeExtensions on ThemeData {
-  Color get success => const Color(0xFF4CAF50);
 }

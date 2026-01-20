@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:split_money/app/core/theme/theme.dart';
-import 'package:split_money/app/modules/create_events/amount_and_split/amount_and_split_controller.dart';
+import 'package:split_money/app/modules/create_events/create_event_flow_controller.dart';
 
 class CompleteEventSetupScreen extends StatelessWidget {
   const CompleteEventSetupScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CompleteEventSetupController());
+    final controller = Get.find<CreateEventFlowController>();
 
     return Scaffold(
       body: SafeArea(
@@ -26,23 +26,27 @@ class CompleteEventSetupScreen extends StatelessWidget {
                     onPressed: () => Get.back(),
                   ),
                   // Step Indicator
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: List.generate(3, (index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: 12,
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: index < 2
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(
-                                  context,
-                                ).colorScheme.outline.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                      );
-                    }),
+                  Obx(
+                    () => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(3, (index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: controller.currentStep.value == index + 1
+                              ? 32
+                              : 12,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: controller.currentStep.value > index
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.outline.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                   Container(
                     width: 40,
@@ -611,13 +615,13 @@ class CompleteEventSetupScreen extends StatelessWidget {
             // Continue/Confirm Button
             Container(
               padding: const EdgeInsets.all(24),
-              child: GetBuilder<CompleteEventSetupController>(
-                builder: (ctrl) => SizedBox(
+              child: Obx(
+                () => SizedBox(
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: ctrl.selectedSplitType.value != null
-                        ? ctrl.onContinue
+                    onPressed: controller.canContinueStep3
+                        ? controller.completeFlow
                         : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -631,7 +635,7 @@ class CompleteEventSetupScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (ctrl.selectedSplitType.value != null) ...[
+                        if (controller.selectedSplitType.value != null) ...[
                           Container(
                             width: 32,
                             height: 32,
@@ -648,22 +652,22 @@ class CompleteEventSetupScreen extends StatelessWidget {
                           const SizedBox(width: 12),
                         ],
                         Text(
-                          ctrl.selectedSplitType.value != null
-                              ? 'Confirm Limits'
-                              : 'Continue',
+                          controller.selectedSplitType.value != null
+                              ? 'Complete Event'
+                              : 'Select Split Type',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: ctrl.selectedSplitType.value != null
+                            color: controller.selectedSplitType.value != null
                                 ? Colors.white
                                 : Theme.of(context).colorScheme.outline,
                           ),
                         ),
-                        if (ctrl.selectedSplitType.value != null)
+                        if (controller.selectedSplitType.value != null)
                           const SizedBox(width: 12),
                         Icon(
                           Icons.arrow_forward,
-                          color: ctrl.selectedSplitType.value != null
+                          color: controller.selectedSplitType.value != null
                               ? Colors.white
                               : Theme.of(context).colorScheme.outline,
                         ),
