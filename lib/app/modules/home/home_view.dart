@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/home/home_controller.dart';
 import 'package:split_money/app/modules/navigation/controllers/bottom_nav_controller.dart';
+import 'package:split_money/app/modules/Settings/profile/profile_controller.dart';
 import 'package:split_money/app/modules/navigation/widgets/app_drawer.dart';
 
 class HomeScreen extends GetView<HomeController> {
@@ -20,6 +21,7 @@ class HomeScreen extends GetView<HomeController> {
           : const Color(0xFFF5F5F5),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F2F2F),
+        scrolledUnderElevation: 0,
         elevation: 0,
         toolbarHeight:
             0, // Hide the default toolbar, just use the status bar color
@@ -38,7 +40,7 @@ class HomeScreen extends GetView<HomeController> {
                 bottomRight: Radius.circular(32),
               ),
             ),
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
             child: Column(
               children: [
                 // Top Bar
@@ -53,14 +55,51 @@ class HomeScreen extends GetView<HomeController> {
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(50),
                           color: const Color(0xFFCCE5E3),
                         ),
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            "https://media.licdn.com/dms/image/v2/D4D03AQHLVGIVaL9i3A/profile-displayphoto-scale_200_200/B4DZlENDaYJYAc-/0/1757785898710?e=2147483647&v=beta&t=69OvRM_VA0P8Hb020ubfCOxTtJuKUUCNCeP5pYLBaY4",
-                          ),
-                        ),
+                        child: Get.isRegistered<ProfileController>()
+                            ? Obx(() {
+                                final imageUrl = Get.find<ProfileController>()
+                                    .profileImage
+                                    .value;
+
+                                if (imageUrl.isEmpty) {
+                                  return const Center(
+                                    child: Icon(
+                                      Icons.person_outline,
+                                      size: 28,
+                                      color: Color(0xFF2F2F2F),
+                                    ),
+                                  );
+                                }
+
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    imageUrl,
+                                    width: 56,
+                                    height: 56,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Center(
+                                              child: Icon(
+                                                Icons.person_outline,
+                                                size: 28,
+                                                color: Color(0xFF2F2F2F),
+                                              ),
+                                            ),
+                                  ),
+                                );
+                              })
+                            : const Center(
+                                child: Icon(
+                                  Icons.person_outline,
+                                  size: 28,
+                                  color: Color(0xFF2F2F2F),
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -75,7 +114,7 @@ class HomeScreen extends GetView<HomeController> {
                               Text(
                                 'WELCOME BACK',
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white.withOpacity(0.7),
                                 ),
@@ -93,7 +132,7 @@ class HomeScreen extends GetView<HomeController> {
                                 () => Text(
                                   controller.userName,
                                   style: const TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
@@ -104,7 +143,7 @@ class HomeScreen extends GetView<HomeController> {
                           const Text(
                             'Dashboard',
                             style: TextStyle(
-                              fontSize: 26,
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),

@@ -35,8 +35,8 @@ class BottomNavController extends GetxController {
     // Animate page transition for smooth effect
     pageController.animateToPage(
       index,
-      duration: const Duration(milliseconds: 350),
-      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeInBack,
     );
   }
 
