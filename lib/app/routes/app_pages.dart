@@ -2,6 +2,7 @@ import 'package:split_money/app/modules/Settings/profile/edit profile/edit_profi
 import 'package:split_money/app/modules/Settings/profile/profile_binding.dart';
 import 'package:split_money/app/modules/Settings/profile/profile_view.dart';
 import 'package:split_money/app/modules/Settings/settings_view.dart';
+import 'package:split_money/app/modules/notification/notification_view.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/auth/auth_binding.dart';
 import 'package:split_money/app/modules/auth/auth_login_view.dart';
@@ -107,6 +108,11 @@ class AppPages {
       name: AppRoutes.editProfile,
       page: () => const EditProfileView(),
       binding: ProfileBinding(),
+    ),
+    // Notifications
+    GetPage(
+      name: AppRoutes.notifications,
+      page: () => const NotificationsView(),
     ),
     // Add more routes as needed (profile, editProfile, etc.)
   ];

@@ -98,10 +98,15 @@ class HomeScreen extends GetView<HomeController> {
                         color: const Color(0xFF404040),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(
-                        Icons.notifications_outlined,
-                        color: Colors.white,
-                        size: 24,
+                      child: IconButton(
+                        onPressed: () {
+                          controller.onNotificationsTap();
+                        },
+                        icon: const Icon(
+                          Icons.notifications_outlined,
+                          color: Colors.white,
+                          size: 24,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
