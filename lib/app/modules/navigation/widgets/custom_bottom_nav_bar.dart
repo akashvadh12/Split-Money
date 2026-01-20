@@ -92,8 +92,8 @@ class CustomBottomNavBar extends StatelessWidget {
             Icons.category_outlined,
             color: Theme.of(context).colorScheme.outline,
           ),
-          activeItem: Icon(Icons.category, color: Colors.white),
-          itemLabel: 'Categories',
+          activeItem: Icon(Icons.event, color: Colors.white),
+          itemLabel: 'Create Events',
         ),
 
         /// Orders

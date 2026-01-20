@@ -16,6 +16,7 @@ ThemeData buildLightTheme() {
   const surfaceVariant = Color(0xFFF7F9F8);
   const outline = Color(0xFF707978);
 
+
   const success = Color(0xFF4CAF50);
   const error = Color(0xFFB00020);
 
