@@ -27,7 +27,7 @@ class Event {
 
 class HomeController extends GetxController {
   final AuthService _authService = Get.find<AuthService>();
-  
+
   final RxList<Event> upcomingEvents = <Event>[].obs;
   final RxInt activeEventsCount = 12.obs;
   final RxDouble totalCollected = 4850.0.obs;
@@ -89,5 +89,9 @@ class HomeController extends GetxController {
   void logout() async {
     await _authService.logout();
     Get.offAllNamed('/login');
+  }
+
+  void onNotificationsTap() {
+    Get.toNamed('/notifications');
   }
 }

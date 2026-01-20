@@ -364,9 +364,11 @@ class _AccountInfoCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.black26,
+                color: Brightness.dark == Theme.of(context).brightness
+                    ? Colors.white54
+                    : Colors.black26,
                 size: 18,
               ),
             ],
