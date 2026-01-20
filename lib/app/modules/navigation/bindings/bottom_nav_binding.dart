@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:split_money/app/modules/Settings/profile/profile_binding.dart';
 import 'package:split_money/app/modules/navigation/controllers/bottom_nav_controller.dart';
 
 class BottomNavBinding extends Bindings {

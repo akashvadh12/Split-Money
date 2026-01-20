@@ -13,6 +13,8 @@ class AppRoutes {
   static const String contactUs = '/contact-us';
   static const String privacyPolicy = '/privacy-policy';
   static const String terms = '/terms';
+  static const String settings = '/settings';
+  static const String notifications = '/notifications';
   static const String editProfile = '/edit-profile';
   static const String changePassword = '/change-password';
 }

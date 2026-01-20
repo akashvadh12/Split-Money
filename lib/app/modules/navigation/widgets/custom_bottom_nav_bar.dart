@@ -109,11 +109,11 @@ class CustomBottomNavBar extends StatelessWidget {
         /// Profile
         BottomBarItem(
           inActiveItem: Icon(
-            Icons.person_outline,
+            Icons.settings,
             color: Theme.of(context).colorScheme.outline,
           ),
-          activeItem: Icon(Icons.person, color: Colors.white),
-          itemLabel: 'Profile',
+          activeItem: Icon(Icons.settings, color: Colors.white),
+          itemLabel: 'Settings',
         ),
       ],
 

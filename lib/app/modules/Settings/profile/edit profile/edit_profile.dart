@@ -11,7 +11,6 @@ class EditProfileView extends GetView<ProfileController> {
     final isDark = theme.brightness == Brightness.dark;
 
     final bgColor = theme.colorScheme.surface;
-    final cardColor = theme.colorScheme.surfaceContainerHighest;
     final textColor = theme.colorScheme.onSurface;
     final hintColor = theme.colorScheme.onSurfaceVariant;
 

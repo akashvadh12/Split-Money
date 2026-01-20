@@ -2,8 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:split_money/app/core/theme/theme.dart';
-import 'package:split_money/app/modules/profile/profile_controller.dart';
+import 'package:split_money/app/modules/Settings/profile/profile_controller.dart';
+import 'edit profile/edit_profile.dart';
+import 'package:split_money/app/routes/app_routes.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
@@ -42,6 +43,41 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       child: Column(
                         children: [
+                          // Top action row: back (left) and edit (right)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                padding: EdgeInsets.symmetric(horizontal: 30),
+                                constraints: const BoxConstraints(),
+                                icon: Icon(
+                                  Icons.arrow_back_ios_new,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.8),
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  Get.offAllNamed(AppRoutes.settings);
+                                },
+                              ),
+                              IconButton(
+                                padding: EdgeInsets.symmetric(horizontal: 30),
+                                constraints: const BoxConstraints(),
+                                icon: Icon(
+                                  Icons.mode_edit_outline,
+                                  size: 22,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.8),
+                                ),
+                                onPressed: () {
+                                  Get.to(() => const EditProfileView());
+                                },
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
                           Stack(
                             alignment: Alignment.bottomRight,
                             children: [
