@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:split_money/app/modules/create_events/create_events.dart';
+import 'package:split_money/app/modules/events/create_events/create_events.dart';
 import 'package:split_money/app/modules/events/events_view.dart';
 import 'package:split_money/app/modules/home/home_view.dart';
 import 'package:split_money/app/modules/navigation/widgets/app_drawer.dart';
@@ -37,12 +37,10 @@ class MainScreen extends GetView<BottomNavController> {
         children: _screens,
       ),
 
-      bottomNavigationBar: Obx(
-        () => CustomBottomNavBar(
-          controller: controller.notchBottomBarController,
-          onTap: controller.changeTab,
-          selectedIndex: controller.selectedIndex.value,
-        ),
+      bottomNavigationBar: CustomBottomNavBar(
+        controller: controller.notchBottomBarController,
+        onTap: controller.changeTab,
+        selectedIndex: controller.selectedIndex.value,
       ),
     );
   }

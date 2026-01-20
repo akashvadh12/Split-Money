@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:split_money/app/core/theme/theme.dart';
 import 'package:split_money/app/modules/InitialBinding/initial_binding.dart';
 import 'package:split_money/app/modules/auth/auth_service.dart';
-import 'package:split_money/app/modules/create_events/create_event_flow_controller.dart';
+import 'package:split_money/app/modules/events/create_events/create_event_flow_controller.dart';
 import 'package:split_money/app/modules/home/home_controller.dart';
 import 'package:split_money/app/routes/app_pages.dart';
 import 'package:split_money/app/routes/app_routes.dart';

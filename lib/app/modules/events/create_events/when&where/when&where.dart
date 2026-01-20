@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:split_money/app/modules/create_events/create_event_flow_controller.dart';
+import 'package:split_money/app/modules/events/create_events/create_event_flow_controller.dart';
 
 class WhenWhereScreen extends StatelessWidget {
   const WhenWhereScreen({Key? key}) : super(key: key);

@@ -136,6 +136,7 @@ class _SettingsViewState extends State<SettingsView>
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
+        top: false,
         child: Column(
           children: [
             // Fixed clipped header
@@ -146,7 +147,12 @@ class _SettingsViewState extends State<SettingsView>
               ),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+                padding: EdgeInsets.fromLTRB(
+                  20,
+                  MediaQuery.of(context).padding.top + 20,
+                  20,
+                  24,
+                ),
                 color: headerColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
