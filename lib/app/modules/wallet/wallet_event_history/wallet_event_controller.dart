@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:split_money/app/modules/wallet/wallet_event_history/wallet_event_breakdown.dart';
 
 class WalletEvent {
   final String dateLabel; // e.g. 'JULY, 14 SAT'
@@ -59,10 +60,11 @@ class WalletEventController extends GetxController {
 
   void onEventTap(WalletEvent event) {
     // placeholder action
-    Get.snackbar(
-      'Event',
-      'Tapped "${event.title}"',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    Get.to(WalletEventBreakdownScreen());
+    // Get.snackbar(
+    //   'Event',
+    //   'Tapped "${event.title}"',
+    //   snackPosition: SnackPosition.BOTTOM,
+    // );
   }
 }

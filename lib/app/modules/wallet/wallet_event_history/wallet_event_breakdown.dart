@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:split_money/app/modules/wallet/wallet_event_details.dart';
 import 'wallet_event_controller.dart';
 
 class WalletEventBreakdownScreen extends StatelessWidget {
@@ -134,7 +135,8 @@ class WalletEventBreakdownScreen extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: GestureDetector(
-                        onTap: () => controller.onEventTap(e),
+                        onTap: () =>  Get.to(WalletEventDetailsScreen()),
+                        // onTap: () => controller.onEventTap(e),
                         child: Container(
                           decoration: BoxDecoration(
                             color: bgColor,

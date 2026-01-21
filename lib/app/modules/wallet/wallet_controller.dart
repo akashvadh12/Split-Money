@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:split_money/app/modules/wallet/wallet_event_breakdown.dart';
+import 'package:split_money/app/modules/wallet/wallet_event_history/wallet_event_breakdown.dart';
 
 // Controller
 class WalletController extends GetxController {
