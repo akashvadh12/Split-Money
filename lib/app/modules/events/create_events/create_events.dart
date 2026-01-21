@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:split_money/app/modules/create_events/create_event_flow_controller.dart';
+import 'package:split_money/app/modules/events/create_events/create_event_flow_controller.dart';
 
 // Main Screen
 class CreateEventScreen extends StatelessWidget {
-  const CreateEventScreen({Key? key}) : super(key: key);
+  const CreateEventScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +20,6 @@ class CreateEventScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, size: 20),
-                    onPressed: () => Get.back(),
-                  ),
                   // Step Indicator
                   Obx(
                     () => Row(

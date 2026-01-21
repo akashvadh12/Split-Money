@@ -15,17 +15,14 @@ class WalletEmptyScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF7F9F8),
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Color(0xFF2F2F2F)),
-              onPressed: () {},
-            ),
+        centerTitle: false,
+        title: Text(
+          'Wallet',
+          style: TextStyle(
+            fontSize: 38,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF2F2F2F),
+            letterSpacing: -0.5,
           ),
         ),
         actions: [
@@ -62,18 +59,7 @@ class WalletEmptyScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(24, 8, 24, 24),
-            child: Text(
-              'Wallet',
-              style: TextStyle(
-                fontSize: 38,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF2F2F2F),
-                letterSpacing: -0.5,
-              ),
-            ),
-          ),
+          const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Obx(

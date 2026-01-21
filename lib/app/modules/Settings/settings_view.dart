@@ -1,9 +1,124 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/Settings/settings_controller.dart';
+import 'package:split_money/app/modules/Settings/preferences_controller.dart';
+import 'package:split_money/app/modules/Settings/theme_controller.dart';
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
+
+  @override
+  State<SettingsView> createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends State<SettingsView>
+    with TickerProviderStateMixin {
+  final GlobalKey _darkSwitchKey = GlobalKey();
+  bool _isAnimating = false;
+
+  Future<void> _animateThemeTransition(
+    GlobalKey switchKey,
+    bool toDark,
+    ThemeController themeController,
+  ) async {
+    final overlay = Overlay.of(context);
+    if (overlay == null) return;
+
+    // find center of the switch; fallback to center of screen
+    Offset center = Offset(
+      MediaQuery.of(context).size.width / 2,
+      MediaQuery.of(context).size.height / 2,
+    );
+    try {
+      final renderBox =
+          switchKey.currentContext?.findRenderObject() as RenderBox?;
+      if (renderBox != null) {
+        center = renderBox.localToGlobal(renderBox.size.center(Offset.zero));
+      }
+    } catch (_) {}
+
+    final size = MediaQuery.of(context).size;
+    final dx = max(center.dx, size.width - center.dx);
+    final dy = max(center.dy, size.height - center.dy);
+    final maxRadius = sqrt(dx * dx + dy * dy);
+
+    if (_isAnimating) return;
+    _isAnimating = true;
+
+    final controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 520),
+    );
+    final anim = CurvedAnimation(
+      parent: controller,
+      curve: Curves.easeInOutCubic,
+    );
+
+    final overlayEntry = OverlayEntry(
+      builder: (ctx) {
+        return AnimatedBuilder(
+          animation: anim,
+          builder: (ctx, child) {
+            final radius = toDark
+                ? anim.value * maxRadius
+                : (1 - anim.value) * maxRadius;
+            final opacity = toDark
+                ? anim.value.clamp(0.0, 0.95)
+                : (anim.value).clamp(0.0, 0.95);
+            final overlayColor = toDark
+                ? Colors.black
+                : Colors
+                      .black; // keep dark overlay for both directions for smooth reveal
+            return Stack(
+              children: [
+                Positioned(
+                  left: center.dx - radius,
+                  top: center.dy - radius,
+                  width: radius * 2,
+                  height: radius * 2,
+                  child: Opacity(
+                    opacity: opacity,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: overlayColor,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    overlay.insert(overlayEntry);
+
+    try {
+      // Toggle theme when animation crosses halfway for a smoother handoff
+      var didToggle = false;
+      anim.addListener(() {
+        if (!didToggle && anim.value >= 0.5) {
+          didToggle = true;
+          // apply theme at midpoint so the overlay doesn't sit still fully covering
+          if (toDark) {
+            themeController.toggleDarkMode(true);
+          } else {
+            themeController.toggleDarkMode(false);
+          }
+        }
+      });
+
+      await controller.forward();
+    } finally {
+      overlayEntry.remove();
+      controller.dispose();
+      _isAnimating = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +128,15 @@ class SettingsView extends StatelessWidget {
         ? theme.colorScheme.primary
         : theme.colorScheme.primary; // theme defines sensible primary for both
     final controller = Get.put(SettingsController());
+    final prefsController = Get.put(PreferencesController());
+    final themeController = Get.put(ThemeController());
+    // initialize theme controller based on current context
+    themeController.initFromContext(context);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
+        top: false,
         child: Column(
           children: [
             // Fixed clipped header
@@ -27,7 +147,12 @@ class SettingsView extends StatelessWidget {
               ),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+                padding: EdgeInsets.fromLTRB(
+                  20,
+                  MediaQuery.of(context).padding.top + 20,
+                  20,
+                  24,
+                ),
                 color: headerColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,6 +251,43 @@ class SettingsView extends StatelessWidget {
 
                       const SizedBox(height: 16),
 
+                      // Preferences section (moved below Account Preferences)
+                      _Section(
+                        title: 'PREFERENCES',
+                        children: [
+                          Obx(
+                            () => _SwitchSettingTile(
+                              icon: Icons.notifications_none,
+                              activeIcon: Icons.notifications_active,
+                              bgColor: !isDark
+                                  ? Colors.amber.withValues(alpha: .4)
+                                  : theme.colorScheme.onPrimary,
+                              title: 'Notifications',
+                              value: prefsController.notificationsEnabled.value,
+                              onChanged: prefsController.toggleNotifications,
+                            ),
+                          ),
+                          Obx(
+                            () => _SwitchSettingTile(
+                              icon: Icons.dark_mode,
+                              activeIcon: Icons.dark_mode,
+                              inactiveIcon: Icons.wb_sunny,
+                              bgColor: isDark
+                                  ? theme.colorScheme.onPrimary
+                                  : theme.colorScheme.onPrimary,
+                              title: 'Dark Mode',
+                              value: themeController.darkModeEnabled.value,
+                              onChanged: (val) => _animateThemeTransition(
+                                _darkSwitchKey,
+                                val,
+                                themeController,
+                              ),
+                              switchKey: _darkSwitchKey,
+                            ),
+                          ),
+                        ],
+                      ),
+
                       _Section(
                         title: 'APPLICATION',
                         children: [
@@ -144,7 +306,9 @@ class SettingsView extends StatelessWidget {
                           _SettingTile(
                             icon: Icons.logout,
                             title: 'Logout',
-                            bgColor: const Color.fromARGB(255, 255, 70, 57),
+                            bgColor: const Color(
+                              0xFFFF4639,
+                            ).withValues(alpha: .8),
                             onTap: controller.onLogout,
                           ),
                         ],
@@ -226,6 +390,86 @@ class _SettingTile extends StatelessWidget {
               Icon(Icons.chevron_right, color: textColor ?? theme.dividerColor),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SwitchSettingTile extends StatelessWidget {
+  final IconData icon;
+  final IconData? activeIcon;
+  final IconData? inactiveIcon;
+  final String title;
+  final bool value;
+  final ValueChanged<bool>? onChanged;
+  final Color? bgColor;
+  final Key? switchKey;
+
+  const _SwitchSettingTile({
+    required this.icon,
+    this.activeIcon,
+    this.inactiveIcon,
+    required this.title,
+    required this.value,
+    this.onChanged,
+    this.bgColor,
+    this.switchKey,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface.withValues(alpha: .4),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: theme.brightness == Brightness.dark
+                  ? Colors.black.withOpacity(0.09)
+                  : Colors.black.withOpacity(0.06),
+              blurRadius: 10,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 22,
+              backgroundColor: bgColor ?? theme.colorScheme.primaryContainer,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 280),
+                transitionBuilder: (child, anim) => FadeTransition(
+                  opacity: anim,
+                  child: ScaleTransition(scale: anim, child: child),
+                ),
+                child: Icon(
+                  // prefer active/inactive icons when provided
+                  value ? (activeIcon ?? icon) : (inactiveIcon ?? icon),
+                  key: ValueKey<bool>(value),
+                  color: Brightness.dark != theme.brightness
+                      ? Colors.black
+                      : theme.colorScheme.primary,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                title,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+            ),
+            Switch.adaptive(key: switchKey, value: value, onChanged: onChanged),
+          ],
         ),
       ),
     );

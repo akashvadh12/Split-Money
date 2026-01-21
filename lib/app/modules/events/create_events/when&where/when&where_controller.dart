@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/core/theme/theme.dart';
-import 'package:split_money/app/modules/create_events/amount_and_split/amount_and_split_screen.dart';
+import 'package:split_money/app/modules/events/create_events/amount_and_split/amount_and_split_screen.dart';
 
 // Controller
 class WhenWhereController extends GetxController {

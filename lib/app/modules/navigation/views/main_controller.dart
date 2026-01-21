@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:split_money/app/modules/create_events/create_events.dart';
+import 'package:split_money/app/modules/events/create_events/create_events.dart';
+import 'package:split_money/app/modules/events/events_view.dart';
 import 'package:split_money/app/modules/home/home_view.dart';
 import 'package:split_money/app/modules/navigation/widgets/app_drawer.dart';
 import 'package:split_money/app/modules/navigation/controllers/bottom_nav_controller.dart';
@@ -13,6 +14,7 @@ class MainScreen extends GetView<BottomNavController> {
 
   static final List<Widget> _screens = [
     HomeScreen(),
+    EventsScreen(),
     CreateEventScreen(),
     WalletEmptyScreen(),
     SettingsView(),

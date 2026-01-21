@@ -32,13 +32,27 @@ class BottomNavController extends GetxController {
 
     selectedIndex.value = index;
 
-    pageController.jumpToPage(index);
-    notchBottomBarController.jumpTo(index);
+    // Animate page transition for smooth effect
+    pageController
+        .animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    )
+        .then((_) {
+      // sync notch position after page animation completes
+      try {
+        notchBottomBarController.jumpTo(index);
+      } catch (_) {}
+    });
   }
 
   void onPageChanged(int index) {
     selectedIndex.value = index;
-    notchBottomBarController.jumpTo(index);
+    // Keep notch in sync when page changes programmatically
+    try {
+      notchBottomBarController.jumpTo(index);
+    } catch (_) {}
   }
 
   @override

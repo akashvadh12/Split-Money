@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/modules/home/home_controller.dart';
 import 'package:split_money/app/modules/navigation/controllers/bottom_nav_controller.dart';
+import 'package:split_money/app/modules/Settings/profile/profile_controller.dart';
+import 'package:split_money/app/modules/navigation/widgets/app_drawer.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -13,11 +15,13 @@ class HomeScreen extends GetView<HomeController> {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
+      drawer: const AppDrawer(),
       backgroundColor: isDark
           ? const Color(0xFF1A1C1E)
           : const Color(0xFFF5F5F5),
       appBar: AppBar(
         backgroundColor: const Color(0xFF2F2F2F),
+        scrolledUnderElevation: 0,
         elevation: 0,
         toolbarHeight:
             0, // Hide the default toolbar, just use the status bar color
@@ -36,42 +40,66 @@ class HomeScreen extends GetView<HomeController> {
                 bottomRight: Radius.circular(32),
               ),
             ),
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
             child: Column(
               children: [
                 // Top Bar
                 Row(
                   children: [
-                    // Menu / Drawer Button
-                    GestureDetector(
-                      onTap: () => Get.find<BottomNavController>().openDrawer(),
-                      child: Container(
-                        width: 44,
-                        height: 44,
-                        margin: const EdgeInsets.only(right: 12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF404040),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                          size: 22,
-                        ),
-                      ),
-                    ),
                     // Profile Avatar
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: const Color(0xFFCCE5E3),
-                      ),
-                      child: const Icon(
-                        Icons.person,
-                        color: Color(0xFF2F2F2F),
-                        size: 32,
+                    GestureDetector(
+                      onTap: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      child: Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: const Color(0xFFCCE5E3),
+                        ),
+                        child: Get.isRegistered<ProfileController>()
+                            ? Obx(() {
+                                final imageUrl = Get.find<ProfileController>()
+                                    .profileImage
+                                    .value;
+
+                                if (imageUrl.isEmpty) {
+                                  return const Center(
+                                    child: Icon(
+                                      Icons.person_outline,
+                                      size: 28,
+                                      color: Color(0xFF2F2F2F),
+                                    ),
+                                  );
+                                }
+
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    imageUrl,
+                                    width: 56,
+                                    height: 56,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Center(
+                                              child: Icon(
+                                                Icons.person_outline,
+                                                size: 28,
+                                                color: Color(0xFF2F2F2F),
+                                              ),
+                                            ),
+                                  ),
+                                );
+                              })
+                            : const Center(
+                                child: Icon(
+                                  Icons.person_outline,
+                                  size: 28,
+                                  color: Color(0xFF2F2F2F),
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -79,25 +107,45 @@ class HomeScreen extends GetView<HomeController> {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'WELCOME BACK',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withOpacity(0.7),
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Obx(
-                            () => Text(
-                              controller.userName,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                          Row(
+                            children: [
+                              Text(
+                                'WELCOME BACK',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white.withOpacity(0.7),
+                                ),
                               ),
+                              const SizedBox(width: 8),
+                              Container(
+                                width: .8,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  color: theme.dividerColor,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Obx(
+                                () => Text(
+                                  controller.userName,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Text(
+                            'Dashboard',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -123,50 +171,9 @@ class HomeScreen extends GetView<HomeController> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    // Search Icon
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF404040),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.search,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
                   ],
                 ),
-                const SizedBox(height: 32),
                 // Dashboard Title
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Dashboard',
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF404040),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        Icons.more_horiz,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:split_money/app/core/theme/theme.dart';
-import 'package:split_money/app/modules/create_events/when&where/when&where.dart';
+import 'package:split_money/app/modules/events/create_events/when&where/when&where.dart';
 
 // Controller
 class CreateEventController extends GetxController {

@@ -20,16 +20,18 @@ class CustomBottomNavBar extends StatelessWidget {
       notchBottomBarController: controller,
 
       /// Color of the bottom bar
-      color: Colors.white,
+      color: Brightness.dark == Theme.of(context).brightness
+          ? const Color(0xFF2F2F2F)
+          : Theme.of(context).colorScheme.surface,
 
-      /// Show shadow above the bottom bar
-      showShadow: true,
+      /// Show shadow above the bottom bar (disable to make it flush)
+      showShadow: false,
 
       /// Shadow elevation
-      shadowElevation: 8,
+      shadowElevation: 0,
 
-      /// Elevation of the bottom bar
-      elevation: 8,
+      /// Elevation of the bottom bar (0 to keep it flush against screen)
+      elevation: 0,
 
       /// Bottom padding for safe area
       bottomBarHeight: 65,
@@ -50,8 +52,8 @@ class CustomBottomNavBar extends StatelessWidget {
       blurFilterX: 5.0,
       blurFilterY: 5.0,
 
-      /// Animation duration
-      durationInMilliSeconds: 300,
+      /// Animation duration (made slightly longer for smoother transition)
+      durationInMilliSeconds: 450,
 
       /// Item label style
       itemLabelStyle: const TextStyle(
@@ -64,15 +66,21 @@ class CustomBottomNavBar extends StatelessWidget {
         startAngle: 0,
         endAngle: 3.14 * 2,
         colors: [
-          Theme.of(context).colorScheme.primary,
-          Theme.of(context).colorScheme.secondary,
-          Theme.of(context).colorScheme.primary,
+          Brightness.dark == Theme.of(context).brightness
+              ? Theme.of(context).colorScheme.tertiary
+              : Theme.of(context).colorScheme.primary,
+          Brightness.dark == Theme.of(context).brightness
+              ? Theme.of(context).colorScheme.onError
+              : Theme.of(context).colorScheme.secondary,
+          Brightness.dark == Theme.of(context).brightness
+              ? Theme.of(context).colorScheme.tertiary
+              : Theme.of(context).colorScheme.primary,
         ],
         tileMode: TileMode.mirror,
       ).createShader(Rect.fromCircle(center: Offset.zero, radius: 8.0)),
 
-      /// Remove margin
-      removeMargins: false,
+      /// Remove margin so the bar connects with screen edges
+      removeMargins: true,
 
       /// Bottom bar items
       bottomBarItems: [
@@ -86,14 +94,22 @@ class CustomBottomNavBar extends StatelessWidget {
           itemLabel: 'Home',
         ),
 
-        /// Categories
+        /// Center/Notch (Create)
         BottomBarItem(
           inActiveItem: Icon(
             Icons.event,
             color: Theme.of(context).colorScheme.outline,
           ),
           activeItem: Icon(Icons.event, color: Colors.white),
-          itemLabel: 'Create Events',
+          itemLabel: 'Events',
+        ),
+        BottomBarItem(
+          inActiveItem: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.outline,
+          ),
+          activeItem: Icon(Icons.add, color: Colors.white),
+          itemLabel: 'Create',
         ),
 
         /// Orders
@@ -122,7 +138,9 @@ class CustomBottomNavBar extends StatelessWidget {
 
       /// Knotch gradient
       kIconSize: 24.0,
-      kBottomRadius: 28.0,
+
+      /// Keep notch radius so notch aligns properly while bar is flush
+      kBottomRadius: 0.0,
     );
   }
 }

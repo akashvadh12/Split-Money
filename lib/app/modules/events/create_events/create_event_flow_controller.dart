@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:split_money/app/modules/create_events/create_events.dart';
-import 'package:split_money/app/modules/create_events/when&where/when&where.dart';
-import 'package:split_money/app/modules/create_events/amount_and_split/amount_and_split_screen.dart';
+import 'package:split_money/app/modules/events/create_events/create_events.dart';
+import 'package:split_money/app/modules/events/create_events/when&where/when&where.dart';
+import 'package:split_money/app/modules/events/create_events/amount_and_split/amount_and_split_screen.dart';
 
 /// Centralized controller for managing the entire Create Event flow
 /// Handles navigation, step tracking, and data persistence across all screens
